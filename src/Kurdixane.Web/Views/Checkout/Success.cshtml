@@ -1,0 +1,12 @@
+@{
+    ViewData["Title"] = "Sipariş Alındı";
+}
+<section class="section">
+    <div class="container text-center py-5">
+        <i class="fa-solid fa-circle-check fa-5x text-success mb-3"></i>
+        <h1>Siparişiniz Alındı!</h1>
+        <p class="lead">Sipariş numaranız: <strong>@ViewBag.OrderNumber</strong></p>
+        <p class="text-muted">Siparişiniz en kısa sürede hazırlanacaktır. Teşekkür ederiz.</p>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-primary mt-3">Anasayfaya Dön</a>
+    </div>
+</section>

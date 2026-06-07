@@ -1,0 +1,39 @@
+@model Dictionary<string, string?>
+@{
+    ViewData["Title"] = "Sistem Ayarları";
+    string V(string k) => Model.GetValueOrDefault(k) ?? "";
+    var fields = new (string Group, (string Key, string Label, bool Multiline)[] Items)[]
+    {
+        ("Genel", new[] { ("SiteTitle","Site Başlığı",false), ("SiteSlogan","Slogan",false), ("FooterText","Footer Metni",true) }),
+        ("İletişim", new[] { ("ContactPhone","Telefon",false), ("ContactEmail","E-posta",false), ("ContactAddress","Adres",true) }),
+        ("Sosyal Medya", new[] { ("FacebookUrl","Facebook",false), ("InstagramUrl","Instagram",false), ("TwitterUrl","Twitter",false) }),
+        ("SEO", new[] { ("MetaDescription","Meta Açıklama",true), ("MetaKeywords","Meta Anahtar Kelimeler",false) }),
+    };
+}
+<h1 class="page-title">Sistem Ayarları</h1>
+<form asp-action="Index" method="post">
+    @Html.AntiForgeryToken()
+    @foreach (var group in fields)
+    {
+        <div class="admin-card">
+            <div class="card-head"><h5>@group.Group</h5></div>
+            <div class="card-body">
+                @foreach (var f in group.Items)
+                {
+                    <div class="mb-3">
+                        <label class="form-label">@f.Label</label>
+                        @if (f.Multiline)
+                        {
+                            <textarea name="settings[@f.Key]" class="form-control" rows="2">@V(f.Key)</textarea>
+                        }
+                        else
+                        {
+                            <input name="settings[@f.Key]" class="form-control" value="@V(f.Key)" />
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    }
+    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk me-1"></i>Ayarları Kaydet</button>
+</form>

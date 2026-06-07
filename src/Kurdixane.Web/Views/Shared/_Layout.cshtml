@@ -1,0 +1,46 @@
+@inject Kurdixane.Web.Services.ISettingService Settings
+@{
+    var settings = await Settings.GetAllAsync();
+    string siteTitle = settings.GetValueOrDefault("SiteTitle") ?? "Kurdixane";
+    string metaDesc = ViewData["MetaDescription"] as string ?? settings.GetValueOrDefault("MetaDescription") ?? "";
+    string metaKeywords = ViewData["MetaKeywords"] as string ?? settings.GetValueOrDefault("MetaKeywords") ?? "";
+    string pageTitle = ViewData["Title"] != null ? $"{ViewData["Title"]} | {siteTitle}" : siteTitle;
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@pageTitle</title>
+    <meta name="description" content="@metaDesc" />
+    <meta name="keywords" content="@metaKeywords" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+    @await Component.InvokeAsync("Header")
+
+    <main role="main">
+        @if (TempData["Success"] != null)
+        {
+            <div class="container mt-3"><div class="alert alert-success alert-dismissible fade show" role="alert">@TempData["Success"]<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div></div>
+        }
+        @if (TempData["Info"] != null)
+        {
+            <div class="container mt-3"><div class="alert alert-info alert-dismissible fade show" role="alert">@TempData["Info"]<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div></div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="container mt-3"><div class="alert alert-danger alert-dismissible fade show" role="alert">@TempData["Error"]<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div></div>
+        }
+        @RenderBody()
+    </main>
+
+    @await Component.InvokeAsync("Footer")
+
+    <partial name="_Scripts" />
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,106 @@
+@model Kurdixane.Web.ViewModels.ProductDetailViewModel
+@{
+    var pr = Model.Product;
+    ViewData["Title"] = pr.MetaTitle ?? pr.Name;
+    ViewData["MetaDescription"] = pr.MetaDescription;
+    ViewData["MetaKeywords"] = pr.MetaKeywords;
+}
+
+<div class="page-head">
+    <div class="container">
+        <nav>
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Anasayfa</a></li>
+                <li class="breadcrumb-item"><a asp-controller="Product" asp-action="Index">Ürünler</a></li>
+                @if (pr.Category != null)
+                {
+                    <li class="breadcrumb-item"><a asp-controller="Category" asp-action="Index" asp-route-slug="@pr.Category.Slug">@pr.Category.Name</a></li>
+                }
+                <li class="breadcrumb-item active">@pr.Name</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<section class="section">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-lg-5">
+                <div class="detail-gallery">
+                    <img src="@(string.IsNullOrEmpty(pr.ImageUrl) ? "/img/products/placeholder-1.svg" : pr.ImageUrl)" alt="@pr.Name" />
+                    @if (pr.Images != null && pr.Images.Any())
+                    {
+                        <div class="row g-2 mt-2">
+                            @foreach (var img in pr.Images.OrderBy(i => i.DisplayOrder))
+                            {
+                                <div class="col-3"><img src="@img.ImageUrl" alt="@img.AltText" /></div>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="detail-info">
+                    <span class="product-cat text-muted">@(pr.Category?.Name)</span>
+                    <h1>@pr.Name</h1>
+                    @if (!string.IsNullOrEmpty(pr.Sku))
+                    {
+                        <p class="text-muted">Ürün Kodu: <strong>@pr.Sku</strong></p>
+                    }
+                    <div class="mb-3">
+                        <span class="detail-price">@pr.Price.ToString("N2") ₺</span>
+                        @if (pr.OldPrice.HasValue && pr.OldPrice > pr.Price)
+                        {
+                            <span class="detail-old">@pr.OldPrice.Value.ToString("N2") ₺</span>
+                        }
+                    </div>
+                    <p>@pr.ShortDescription</p>
+                    <p>
+                        @if (pr.Stock > 0)
+                        {
+                            <span class="badge bg-success"><i class="fa-solid fa-check me-1"></i>Stokta (@pr.Stock)</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Stokta Yok</span>
+                        }
+                    </p>
+                    <form asp-controller="Cart" asp-action="Add" method="post" class="d-flex gap-2 align-items-center mt-3">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="productId" value="@pr.Id" />
+                        <input type="number" name="quantity" value="1" min="1" class="form-control" style="width:90px" />
+                        <button type="submit" class="btn btn-primary btn-lg" @(pr.Stock <= 0 ? "disabled" : "")>
+                            <i class="fa-solid fa-cart-plus me-1"></i> Sepete Ekle
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-12">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#desc">Açıklama</button></li>
+                </ul>
+                <div class="tab-content border border-top-0 p-4">
+                    <div class="tab-pane fade show active" id="desc">
+                        @Html.Raw(pr.Description)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @if (Model.RelatedProducts.Any())
+        {
+            <div class="mt-5">
+                <div class="section-title"><h3>Benzer Ürünler</h3></div>
+                <div class="row g-4">
+                    @foreach (var rp in Model.RelatedProducts)
+                    {
+                        <div class="col-6 col-md-3"><partial name="_ProductCard" model="rp" /></div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</section>

@@ -1,0 +1,5 @@
+@model Kurdixane.Web.Models.Page
+@{ ViewData["Title"] = "Yeni Sayfa"; }
+<h1 class="page-title">Yeni Sayfa</h1>
+<form asp-action="Create" method="post">@Html.AntiForgeryToken()<partial name="_Form" model="Model" /></form>
+@section Scripts { <partial name="_CKEditor" /> }

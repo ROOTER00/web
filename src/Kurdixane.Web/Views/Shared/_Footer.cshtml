@@ -1,0 +1,57 @@
+@model Kurdixane.Web.ViewModels.FooterViewModel
+@{
+    string siteTitle = Model.Settings.GetValueOrDefault("SiteTitle") ?? "Kurdixane";
+    string footerText = Model.Settings.GetValueOrDefault("FooterText") ?? "";
+    string email = Model.Settings.GetValueOrDefault("ContactEmail") ?? "";
+    string phone = Model.Settings.GetValueOrDefault("ContactPhone") ?? "";
+    string address = Model.Settings.GetValueOrDefault("ContactAddress") ?? "";
+    string fb = Model.Settings.GetValueOrDefault("FacebookUrl") ?? "#";
+    string ig = Model.Settings.GetValueOrDefault("InstagramUrl") ?? "#";
+    string tw = Model.Settings.GetValueOrDefault("TwitterUrl") ?? "#";
+}
+<footer class="main-footer">
+    <div class="container">
+        <div class="row gy-4">
+            <div class="col-lg-4 col-md-6">
+                <h5 class="footer-brand">@siteTitle</h5>
+                <p>@(Model.Settings.GetValueOrDefault("SiteSlogan"))</p>
+                <div class="social-links">
+                    <a href="@fb"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="@ig"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="@tw"><i class="fa-brands fa-twitter"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <h6>Kategoriler</h6>
+                <ul class="footer-links">
+                    @foreach (var cat in Model.Categories.Take(5))
+                    {
+                        <li><a asp-controller="Category" asp-action="Index" asp-route-slug="@cat.Slug">@cat.Name</a></li>
+                    }
+                </ul>
+            </div>
+            <div class="col-lg-2 col-md-6">
+                <h6>Kurumsal</h6>
+                <ul class="footer-links">
+                    @foreach (var item in Model.Menu)
+                    {
+                        <li><a href="@item.Url">@item.Title</a></li>
+                    }
+                </ul>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <h6>İletişim</h6>
+                <ul class="footer-contact">
+                    <li><i class="fa-solid fa-location-dot me-2"></i>@address</li>
+                    <li><i class="fa-solid fa-phone me-2"></i>@phone</li>
+                    <li><i class="fa-solid fa-envelope me-2"></i>@email</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <div class="container text-center">
+            @footerText
+        </div>
+    </div>
+</footer>

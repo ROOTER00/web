@@ -1,0 +1,76 @@
+@model Kurdixane.Web.ViewModels.CheckoutViewModel
+@{
+    ViewData["Title"] = "Sipariş Bilgileri";
+}
+
+<div class="page-head">
+    <div class="container"><h1>Sipariş Bilgileri</h1></div>
+</div>
+
+<section class="section">
+    <div class="container">
+        <form asp-controller="Checkout" asp-action="Index" method="post">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row g-4">
+                <div class="col-lg-7">
+                    <div class="sidebar-box">
+                        <h6>Teslimat Bilgileri</h6>
+                        <div class="mb-3">
+                            <label asp-for="CustomerName" class="form-label"></label>
+                            <input asp-for="CustomerName" class="form-control" />
+                            <span asp-validation-for="CustomerName" class="text-danger"></span>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Email" class="form-label"></label>
+                                <input asp-for="Email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Phone" class="form-label"></label>
+                                <input asp-for="Phone" class="form-control" />
+                                <span asp-validation-for="Phone" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Address" class="form-label"></label>
+                            <textarea asp-for="Address" class="form-control" rows="2"></textarea>
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="City" class="form-label"></label>
+                            <input asp-for="City" class="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Note" class="form-label"></label>
+                            <textarea asp-for="Note" class="form-control" rows="2"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="cart-summary">
+                        <h5 class="mb-3">Sipariş Özeti</h5>
+                        @foreach (var line in Model.Cart.Lines)
+                        {
+                            <div class="d-flex justify-content-between mb-2 small">
+                                <span>@line.Name × @line.Quantity</span>
+                                <span>@line.LineTotal.ToString("N2") ₺</span>
+                            </div>
+                        }
+                        <hr />
+                        <div class="d-flex justify-content-between mb-2"><span>Ara Toplam</span><span>@Model.Cart.Subtotal.ToString("N2") ₺</span></div>
+                        <div class="d-flex justify-content-between mb-2"><span>Kargo</span><span>@(Model.Cart.ShippingCost == 0 ? "Ücretsiz" : Model.Cart.ShippingCost.ToString("N2") + " ₺")</span></div>
+                        <hr />
+                        <div class="d-flex justify-content-between fw-bold fs-5"><span>Toplam</span><span class="text-primary">@Model.Cart.Total.ToString("N2") ₺</span></div>
+                        <button type="submit" class="btn btn-primary w-100 mt-3">Siparişi Onayla</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

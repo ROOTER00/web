@@ -1,0 +1,27 @@
+@model List<Kurdixane.Web.Models.ContactMessage>
+@{ ViewData["Title"] = "Mesajlar"; }
+<h1 class="page-title">İletişim Mesajları</h1>
+<div class="admin-card"><div class="card-body p-0">
+    <table class="table mb-0">
+        <thead><tr><th>Gönderen</th><th>Konu</th><th>Tarih</th><th>Durum</th><th></th></tr></thead>
+        <tbody>
+            @if (Model.Count == 0)
+            {
+                <tr><td colspan="5" class="text-center text-muted py-4">Mesaj yok.</td></tr>
+            }
+            @foreach (var m in Model)
+            {
+                <tr class="@(m.IsRead ? "" : "fw-bold")">
+                    <td>@m.Name<br /><small class="text-muted fw-normal">@m.Email</small></td>
+                    <td>@m.Subject</td>
+                    <td>@m.CreatedAt.ToString("dd.MM.yyyy HH:mm")</td>
+                    <td>@(m.IsRead ? Html.Raw("<span class='badge bg-secondary'>Okundu</span>") : Html.Raw("<span class='badge bg-success'>Yeni</span>"))</td>
+                    <td class="text-end">
+                        <a asp-action="Detail" asp-route-id="@m.Id" class="btn btn-sm btn-outline-primary">Oku</a>
+                        <form asp-action="Delete" asp-route-id="@m.Id" method="post" class="d-inline" onsubmit="return confirm('Emin misiniz?');">@Html.AntiForgeryToken()<button class="btn btn-sm btn-outline-danger"><i class="fa-solid fa-trash"></i></button></form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div></div>

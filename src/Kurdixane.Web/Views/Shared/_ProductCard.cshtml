@@ -1,0 +1,36 @@
+@model Kurdixane.Web.Models.Product
+<div class="product-card">
+    <div class="product-thumb">
+        <a asp-controller="Product" asp-action="Detail" asp-route-slug="@Model.Slug">
+            <img src="@(string.IsNullOrEmpty(Model.ImageUrl) ? "/img/products/placeholder-1.svg" : Model.ImageUrl)" alt="@Model.Name" />
+        </a>
+        @if (Model.OldPrice.HasValue && Model.OldPrice > Model.Price)
+        {
+            <span class="product-badge sale">İndirim</span>
+        }
+        else if (Model.IsFeatured)
+        {
+            <span class="product-badge">Öne Çıkan</span>
+        }
+    </div>
+    <div class="product-body">
+        <span class="product-cat">@(Model.Category?.Name)</span>
+        <h3 class="product-title">
+            <a asp-controller="Product" asp-action="Detail" asp-route-slug="@Model.Slug">@Model.Name</a>
+        </h3>
+        <div class="product-price">
+            <span class="price">@Model.Price.ToString("N2") ₺</span>
+            @if (Model.OldPrice.HasValue && Model.OldPrice > Model.Price)
+            {
+                <span class="old-price">@Model.OldPrice.Value.ToString("N2") ₺</span>
+            }
+        </div>
+        <form asp-controller="Cart" asp-action="Add" method="post" class="add-cart">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="productId" value="@Model.Id" />
+            <button type="submit" class="btn btn-primary btn-sm w-100">
+                <i class="fa-solid fa-cart-plus me-1"></i> Sepete Ekle
+            </button>
+        </form>
+    </div>
+</div>

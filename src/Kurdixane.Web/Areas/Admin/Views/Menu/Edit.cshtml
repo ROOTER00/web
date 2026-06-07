@@ -1,0 +1,4 @@
+@model Kurdixane.Web.Models.MenuItem
+@{ ViewData["Title"] = "Menü Öğesi Düzenle"; }
+<h1 class="page-title">Menü Öğesi Düzenle</h1>
+<form asp-action="Edit" method="post">@Html.AntiForgeryToken()<partial name="_Form" model="Model" /></form>

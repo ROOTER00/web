@@ -1,0 +1,50 @@
+@model Kurdixane.Web.Models.User
+@{
+    ViewData["Title"] = "Hesabım";
+    var orders = ViewBag.Orders as List<Kurdixane.Web.Models.Order> ?? new();
+}
+<div class="page-head"><div class="container"><h1>Hesabım</h1></div></div>
+<section class="section">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="sidebar-box">
+                    <h6>Profil Bilgileri</h6>
+                    <p class="mb-1"><strong>@Model?.FullName</strong></p>
+                    <p class="text-muted mb-1">@Model?.Email</p>
+                    <p class="text-muted">@Model?.Phone</p>
+                    <form asp-controller="Account" asp-action="Logout" method="post">
+                        @Html.AntiForgeryToken()
+                        <button class="btn btn-outline-danger btn-sm" type="submit">Çıkış Yap</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="sidebar-box">
+                    <h6>Siparişlerim</h6>
+                    @if (orders.Count == 0)
+                    {
+                        <p class="text-muted">Henüz siparişiniz bulunmuyor.</p>
+                    }
+                    else
+                    {
+                        <table class="table">
+                            <thead><tr><th>Sipariş No</th><th>Tarih</th><th>Tutar</th><th>Durum</th></tr></thead>
+                            <tbody>
+                                @foreach (var o in orders)
+                                {
+                                    <tr>
+                                        <td>@o.OrderNumber</td>
+                                        <td>@o.CreatedAt.ToString("dd.MM.yyyy")</td>
+                                        <td>@o.TotalAmount.ToString("N2") ₺</td>
+                                        <td><span class="badge bg-secondary">@o.Status</span></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,52 @@
+@model Kurdixane.Web.Models.ContactMessage
+@{
+    ViewData["Title"] = "İletişim";
+    var settings = ViewBag.Settings as Dictionary<string, string?> ?? new();
+}
+<div class="page-head"><div class="container"><h1>İletişim</h1></div></div>
+<section class="section">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-5">
+                <div class="sidebar-box">
+                    <h6>İletişim Bilgileri</h6>
+                    <p><i class="fa-solid fa-location-dot me-2 text-primary"></i>@settings.GetValueOrDefault("ContactAddress")</p>
+                    <p><i class="fa-solid fa-phone me-2 text-primary"></i>@settings.GetValueOrDefault("ContactPhone")</p>
+                    <p><i class="fa-solid fa-envelope me-2 text-primary"></i>@settings.GetValueOrDefault("ContactEmail")</p>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="sidebar-box">
+                    <h6>Bize Yazın</h6>
+                    <form asp-controller="Contact" asp-action="Index" method="post">
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Name" class="form-label">Ad Soyad</label>
+                                <input asp-for="Name" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Email" class="form-label">E-posta</label>
+                                <input asp-for="Email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Subject" class="form-label">Konu</label>
+                            <input asp-for="Subject" class="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Message" class="form-label">Mesaj</label>
+                            <textarea asp-for="Message" class="form-control" rows="5"></textarea>
+                            <span asp-validation-for="Message" class="text-danger"></span>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Gönder</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }
