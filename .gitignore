@@ -1,0 +1,25 @@
+## .NET / ASP.NET
+bin/
+obj/
+out/
+*.user
+*.suo
+.vs/
+.vscode/
+
+## Build results
+[Dd]ebug/
+[Rr]elease/
+[Bb]in/
+[Oo]bj/
+
+## Rider / IDE
+.idea/
+
+## Logs / env
+*.log
+appsettings.*.local.json
+
+## OS
+.DS_Store
+Thumbs.db
