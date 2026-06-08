@@ -31,6 +31,17 @@ public class HomeController : Controller
         return View(model);
     }
 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Subscribe(string? email)
+    {
+        TempData["Success"] = string.IsNullOrWhiteSpace(email)
+            ? "Lütfen geçerli bir e-posta adresi girin."
+            : "Bültenimize abone oldunuz. Teşekkür ederiz!";
+        var referer = Request.Headers["Referer"].ToString();
+        return Redirect(string.IsNullOrEmpty(referer) ? "/" : referer);
+    }
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
         => View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

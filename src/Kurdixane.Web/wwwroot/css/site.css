@@ -4,6 +4,19 @@
    ============================================================ */
 
 /* ---- Brand text logo ---- */
+.logo a .logo-text,
+.logo-text {
+    display: inline-block;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    background: linear-gradient(90deg, var(--color-primary, #2f57ef), var(--color-secondary, #b966e7));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+}
+
 .rbt-brand-text {
     font-size: 28px;
     font-weight: 800;

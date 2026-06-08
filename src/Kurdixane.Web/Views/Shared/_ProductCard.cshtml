@@ -1,38 +1,61 @@
 @model Kurdixane.Web.Models.Product
 @{
     bool onSale = Model.OldPrice.HasValue && Model.OldPrice > Model.Price;
+    int discount = onSale ? (int)System.Math.Round((1 - (Model.Price / Model.OldPrice!.Value)) * 100) : 0;
     string img = string.IsNullOrEmpty(Model.ImageUrl) ? "/img/products/placeholder-1.svg" : Model.ImageUrl;
 }
 <div class="rbt-card variation-01 rbt-hover">
     <div class="rbt-card-img">
         <a asp-controller="Product" asp-action="Detail" asp-route-slug="@Model.Slug">
-            <img src="@img" alt="@Model.Name" />
+            <img src="@img" alt="@Model.Name">
             @if (onSale)
             {
-                <div class="rbt-badge-3 bg-color-primary-opacity">
+                <div class="rbt-badge-3 bg-white">
+                    <span>-@discount%</span>
                     <span>İndirim</span>
-                </div>
-            }
-            else if (Model.IsFeatured)
-            {
-                <div class="rbt-badge-3 bg-color-warning-opacity">
-                    <span>Öne Çıkan</span>
                 </div>
             }
         </a>
     </div>
     <div class="rbt-card-body">
-        @if (Model.Category != null)
-        {
-            <div class="rbt-card-top">
-                <div class="rbt-review">
-                    <span class="rbt-category"><i class="feather-tag"></i> @Model.Category.Name</span>
+        <div class="rbt-card-top">
+            <div class="rbt-review">
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
                 </div>
             </div>
+            @if (Model.Stock > 0)
+            {
+                <span class="rbt-badge variation-03 bg-primary-opacity color-primary">Stokta</span>
+            }
+            else
+            {
+                <span class="rbt-badge variation-03 bg-color-danger-opacity color-danger">Tükendi</span>
+            }
+        </div>
+
+        <h4 class="rbt-card-title"><a asp-controller="Product" asp-action="Detail" asp-route-slug="@Model.Slug">@Model.Name</a></h4>
+
+        @if (Model.Category != null)
+        {
+            <ul class="rbt-meta">
+                <li><i class="feather-tag"></i>@Model.Category.Name</li>
+                @if (!string.IsNullOrWhiteSpace(Model.Sku))
+                {
+                    <li><i class="feather-hash"></i>@Model.Sku</li>
+                }
+            </ul>
         }
-        <h4 class="rbt-card-title">
-            <a asp-controller="Product" asp-action="Detail" asp-route-slug="@Model.Slug">@Model.Name</a>
-        </h4>
+
+        @if (!string.IsNullOrWhiteSpace(Model.ShortDescription))
+        {
+            <p class="rbt-card-text">@Model.ShortDescription</p>
+        }
+
         <div class="rbt-card-bottom">
             <div class="rbt-price">
                 <span class="current-price">@Model.Price.ToString("N2") ₺</span>
@@ -43,10 +66,8 @@
             </div>
             <form asp-controller="Cart" asp-action="Add" method="post" class="rbt-card-cart-form">
                 @Html.AntiForgeryToken()
-                <input type="hidden" name="productId" value="@Model.Id" />
-                <button type="submit" class="rbt-btn-link" title="Sepete Ekle">
-                    <i class="feather-shopping-cart"></i> Sepete Ekle
-                </button>
+                <input type="hidden" name="productId" value="@Model.Id">
+                <button type="submit" class="rbt-btn-link" title="Sepete Ekle">Sepete Ekle<i class="feather-arrow-right"></i></button>
             </form>
         </div>
     </div>
