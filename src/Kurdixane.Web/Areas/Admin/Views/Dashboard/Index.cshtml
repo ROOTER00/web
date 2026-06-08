@@ -1,0 +1,80 @@
+@model Kurdixane.Web.Areas.Admin.Models.DashboardViewModel
+@{
+    ViewData["Title"] = "Gösterge Paneli";
+}
+<h1 class="page-title">Gösterge Paneli</h1>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-6 col-xl-3">
+        <div class="stat-card">
+            <div class="stat-icon bg-grad-1"><i class="fa-solid fa-box"></i></div>
+            <div><div class="stat-value">@Model.ProductCount</div><div class="stat-label">Ürün</div></div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="stat-card">
+            <div class="stat-icon bg-grad-2"><i class="fa-solid fa-receipt"></i></div>
+            <div><div class="stat-value">@Model.OrderCount</div><div class="stat-label">Sipariş</div></div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="stat-card">
+            <div class="stat-icon bg-grad-3"><i class="fa-solid fa-users"></i></div>
+            <div><div class="stat-value">@Model.UserCount</div><div class="stat-label">Kullanıcı</div></div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="stat-card">
+            <div class="stat-icon bg-grad-4"><i class="fa-solid fa-lira-sign"></i></div>
+            <div><div class="stat-value">@Model.TotalRevenue.ToString("N0") ₺</div><div class="stat-label">Toplam Ciro</div></div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-lg-7">
+        <div class="admin-card">
+            <div class="card-head"><h5>Son Siparişler</h5><a asp-controller="Orders" asp-action="Index" class="btn btn-sm btn-outline-primary">Tümü</a></div>
+            <div class="card-body p-0">
+                <table class="table mb-0">
+                    <thead><tr><th>Sipariş No</th><th>Müşteri</th><th>Tutar</th><th>Durum</th></tr></thead>
+                    <tbody>
+                        @if (Model.RecentOrders.Count == 0)
+                        {
+                            <tr><td colspan="4" class="text-center text-muted py-3">Sipariş yok</td></tr>
+                        }
+                        @foreach (var o in Model.RecentOrders)
+                        {
+                            <tr>
+                                <td><a asp-controller="Orders" asp-action="Detail" asp-route-id="@o.Id">@o.OrderNumber</a></td>
+                                <td>@o.CustomerName</td>
+                                <td>@o.TotalAmount.ToString("N2") ₺</td>
+                                <td><span class="badge bg-secondary">@o.Status</span></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="admin-card">
+            <div class="card-head"><h5>Düşük Stok</h5></div>
+            <div class="card-body p-0">
+                <table class="table mb-0">
+                    <thead><tr><th>Ürün</th><th>Stok</th></tr></thead>
+                    <tbody>
+                        @if (Model.LowStockProducts.Count == 0)
+                        {
+                            <tr><td colspan="2" class="text-center text-muted py-3">Kayıt yok</td></tr>
+                        }
+                        @foreach (var p in Model.LowStockProducts)
+                        {
+                            <tr><td>@p.Name</td><td><span class="badge bg-warning text-dark">@p.Stock</span></td></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

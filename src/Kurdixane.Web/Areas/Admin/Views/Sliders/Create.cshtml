@@ -1,0 +1,4 @@
+@model Kurdixane.Web.Models.Slider
+@{ ViewData["Title"] = "Yeni Slider"; }
+<h1 class="page-title">Yeni Slider</h1>
+<form asp-action="Create" method="post">@Html.AntiForgeryToken()<partial name="_Form" model="Model" /></form>

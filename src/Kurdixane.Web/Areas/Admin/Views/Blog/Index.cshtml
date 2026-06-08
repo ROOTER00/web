@@ -1,0 +1,30 @@
+@model List<Kurdixane.Web.Models.BlogPost>
+@{ ViewData["Title"] = "Blog"; }
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="page-title mb-0">Blog Yazıları</h1>
+    <a asp-action="Create" class="btn btn-primary"><i class="fa-solid fa-plus me-1"></i>Yeni Yazı</a>
+</div>
+<div class="admin-card"><div class="card-body p-0">
+    <table class="table mb-0">
+        <thead><tr><th>Başlık</th><th>Yazar</th><th>Tarih</th><th>Durum</th><th></th></tr></thead>
+        <tbody>
+            @if (Model.Count == 0)
+            {
+                <tr><td colspan="5" class="text-center text-muted py-4">Yazı yok.</td></tr>
+            }
+            @foreach (var p in Model)
+            {
+                <tr>
+                    <td>@p.Title</td>
+                    <td>@(p.Author ?? "-")</td>
+                    <td>@((p.PublishedAt ?? p.CreatedAt).ToString("dd.MM.yyyy"))</td>
+                    <td>@(p.IsPublished ? Html.Raw("<span class='badge bg-success'>Yayında</span>") : Html.Raw("<span class='badge bg-secondary'>Taslak</span>"))</td>
+                    <td class="text-end">
+                        <a asp-action="Edit" asp-route-id="@p.Id" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-pen"></i></a>
+                        <form asp-action="Delete" asp-route-id="@p.Id" method="post" class="d-inline" onsubmit="return confirm('Emin misiniz?');">@Html.AntiForgeryToken()<button class="btn btn-sm btn-outline-danger"><i class="fa-solid fa-trash"></i></button></form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div></div>

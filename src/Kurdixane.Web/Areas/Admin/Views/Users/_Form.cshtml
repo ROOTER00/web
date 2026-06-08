@@ -1,0 +1,31 @@
+@model Kurdixane.Web.Models.User
+@{
+    bool isEdit = Model.Id > 0;
+}
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<input type="hidden" asp-for="Id" />
+<div class="row g-4">
+    <div class="col-lg-8"><div class="admin-card"><div class="card-body">
+        <div class="mb-3"><label asp-for="FullName" class="form-label">Ad Soyad</label><input asp-for="FullName" class="form-control" /><span asp-validation-for="FullName" class="text-danger"></span></div>
+        <div class="mb-3"><label asp-for="Email" class="form-label">E-posta</label><input asp-for="Email" class="form-control" /><span asp-validation-for="Email" class="text-danger"></span></div>
+        <div class="mb-3"><label asp-for="Phone" class="form-label">Telefon</label><input asp-for="Phone" class="form-control" /></div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Şifre @(isEdit ? "(değiştirmek için doldurun)" : "")</label>
+            <input type="password" name="password" id="password" class="form-control" />
+            @if (ViewData.ModelState["password"]?.Errors.Count > 0)
+            {
+                <span class="text-danger">@ViewData.ModelState["password"]!.Errors[0].ErrorMessage</span>
+            }
+        </div>
+    </div></div></div>
+    <div class="col-lg-4"><div class="admin-card"><div class="card-head"><h5>Özellikler</h5></div><div class="card-body">
+        <div class="mb-3">
+            <label asp-for="Role" class="form-label">Rol</label>
+            <select asp-for="Role" asp-items="Html.GetEnumSelectList<Kurdixane.Web.Models.UserRole>()" class="form-select"></select>
+        </div>
+        <div class="form-check mb-3"><input asp-for="IsActive" class="form-check-input" /><label asp-for="IsActive" class="form-check-label">Aktif</label></div>
+    </div></div>
+    <button type="submit" class="btn btn-primary w-100"><i class="fa-solid fa-floppy-disk me-1"></i>Kaydet</button>
+    <a asp-action="Index" class="btn btn-link w-100 mt-2">İptal</a>
+    </div>
+</div>

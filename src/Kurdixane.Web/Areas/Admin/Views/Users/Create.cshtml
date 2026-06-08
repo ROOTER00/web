@@ -1,0 +1,4 @@
+@model Kurdixane.Web.Models.User
+@{ ViewData["Title"] = "Yeni Kullanıcı"; }
+<h1 class="page-title">Yeni Kullanıcı</h1>
+<form asp-action="Create" method="post">@Html.AntiForgeryToken()<partial name="_Form" model="Model" /></form>

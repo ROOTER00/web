@@ -1,0 +1,21 @@
+@model Kurdixane.Web.Models.Slider
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<input type="hidden" asp-for="Id" />
+<div class="row g-4">
+    <div class="col-lg-8"><div class="admin-card"><div class="card-body">
+        <div class="mb-3"><label asp-for="Title" class="form-label">Başlık</label><input asp-for="Title" class="form-control" /><span asp-validation-for="Title" class="text-danger"></span></div>
+        <div class="mb-3"><label asp-for="Subtitle" class="form-label">Alt Başlık</label><textarea asp-for="Subtitle" class="form-control" rows="2"></textarea></div>
+        <div class="mb-3"><label asp-for="ImageUrl" class="form-label">Görsel URL</label><input asp-for="ImageUrl" class="form-control" /><span asp-validation-for="ImageUrl" class="text-danger"></span></div>
+        <div class="row">
+            <div class="col-md-6 mb-3"><label asp-for="Link" class="form-label">Bağlantı (Link)</label><input asp-for="Link" class="form-control" /></div>
+            <div class="col-md-6 mb-3"><label asp-for="ButtonText" class="form-label">Buton Metni</label><input asp-for="ButtonText" class="form-control" /></div>
+        </div>
+    </div></div></div>
+    <div class="col-lg-4"><div class="admin-card"><div class="card-head"><h5>Özellikler</h5></div><div class="card-body">
+        <div class="mb-3"><label asp-for="DisplayOrder" class="form-label">Sıra</label><input asp-for="DisplayOrder" class="form-control" type="number" /></div>
+        <div class="form-check mb-3"><input asp-for="IsActive" class="form-check-input" /><label asp-for="IsActive" class="form-check-label">Aktif</label></div>
+    </div></div>
+    <button type="submit" class="btn btn-primary w-100"><i class="fa-solid fa-floppy-disk me-1"></i>Kaydet</button>
+    <a asp-action="Index" class="btn btn-link w-100 mt-2">İptal</a>
+    </div>
+</div>

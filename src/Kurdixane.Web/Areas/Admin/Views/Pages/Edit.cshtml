@@ -1,0 +1,5 @@
+@model Kurdixane.Web.Models.Page
+@{ ViewData["Title"] = "Sayfa Düzenle"; }
+<h1 class="page-title">Sayfa Düzenle</h1>
+<form asp-action="Edit" method="post">@Html.AntiForgeryToken()<partial name="_Form" model="Model" /></form>
+@section Scripts { <partial name="_CKEditor" /> }

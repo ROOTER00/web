@@ -1,0 +1,287 @@
+/* ============================================================
+   Kurdixane — custom styles layered on top of the Histudy theme.
+   Theme tokens: --color-primary:#2f57ef  --color-secondary:#b966e7
+   ============================================================ */
+
+/* ---- Brand text logo ---- */
+.logo a .logo-text,
+.logo-text {
+    display: inline-block;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    background: linear-gradient(90deg, var(--color-primary, #2f57ef), var(--color-secondary, #b966e7));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+}
+
+.rbt-brand-text {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    background: linear-gradient(90deg, var(--color-primary, #2f57ef), var(--color-secondary, #b966e7));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+}
+
+/* ---- Hero image ---- */
+.kx-hero-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 24px;
+    box-shadow: 0 30px 60px -20px rgba(47, 87, 239, 0.25);
+}
+
+/* ---- Category cards ---- */
+.kx-cat-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 14px;
+    padding: 30px 16px;
+    background: #fff;
+    border: 1px solid var(--color-border, #e9ecef);
+    border-radius: 16px;
+    height: 100%;
+    transition: all 0.3s ease;
+}
+.kx-cat-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px -16px rgba(47, 87, 239, 0.25);
+    border-color: transparent;
+}
+.kx-cat-icon {
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 28px;
+    color: var(--color-primary, #2f57ef);
+    background: var(--primary-opacity, #2f57ef21);
+    transition: all 0.3s ease;
+}
+.kx-cat-card:hover .kx-cat-icon {
+    background: linear-gradient(90deg, var(--color-primary, #2f57ef), var(--color-secondary, #b966e7));
+    color: #fff;
+}
+.kx-cat-card h6 {
+    margin: 0;
+    font-weight: 700;
+    color: var(--color-heading, #161439);
+}
+
+/* ---- Feature boxes ---- */
+.kx-feature-box {
+    text-align: center;
+    background: #fff;
+    border-radius: 16px;
+    padding: 36px 24px;
+    height: 100%;
+    transition: all 0.3s ease;
+}
+.kx-feature-box:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px -16px rgba(47, 87, 239, 0.18);
+}
+.kx-feature-icon {
+    width: 64px;
+    height: 64px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 26px;
+    color: #fff;
+    background: linear-gradient(90deg, var(--color-primary, #2f57ef), var(--color-secondary, #b966e7));
+    margin-bottom: 18px;
+}
+.kx-feature-box h6 {
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--color-heading, #161439);
+}
+.kx-feature-box p {
+    color: var(--color-body, #6f7287);
+    font-size: 15px;
+    margin: 0;
+}
+
+/* ---- Product card bottom (price + add to cart) ---- */
+.rbt-card .rbt-card-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.rbt-card-cart-form {
+    margin: 0;
+}
+.rbt-card-cart-form .rbt-btn-link {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--color-primary, #2f57ef);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.rbt-card-cart-form .rbt-btn-link:hover {
+    color: var(--color-secondary, #b966e7);
+}
+.rbt-card .rbt-category {
+    font-size: 14px;
+    color: var(--color-body, #6f7287);
+}
+
+/* ---- Account dropdown logout button ---- */
+.rbt-logout-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--color-body, #6f7287);
+    font: inherit;
+}
+.rbt-logout-btn:hover { color: var(--color-primary, #2f57ef); }
+
+/* ---- Quantity / cart table helpers ---- */
+.kx-qty-input {
+    width: 70px;
+    text-align: center;
+}
+
+/* ---- Generic page section spacing safety ---- */
+.kx-section { padding: 60px 0; }
+
+/* ---- Make Bootstrap alerts sit nicely under sticky header ---- */
+main .alert { border-radius: 10px; }
+
+/* ---- Order summary / sidebar card ---- */
+.kx-summary-card {
+    background: #fff;
+    border: 1px solid var(--color-border, #e9ecef);
+    border-radius: 16px;
+    padding: 28px;
+}
+.kx-summary-card h4 { font-weight: 700; margin-bottom: 20px; }
+.kx-summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    color: var(--color-body, #6f7287);
+}
+.kx-summary-total {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 14px;
+    margin-top: 10px;
+    border-top: 1px solid var(--color-border, #e9ecef);
+    font-weight: 800;
+    font-size: 20px;
+    color: var(--color-heading, #161439);
+}
+
+/* ---- Product detail gallery ---- */
+.kx-detail-main img {
+    width: 100%;
+    border-radius: 18px;
+    border: 1px solid var(--color-border, #e9ecef);
+}
+.kx-detail-thumb {
+    width: 100%;
+    border-radius: 10px;
+    cursor: pointer;
+    border: 1px solid var(--color-border, #e9ecef);
+}
+.rbt-price.large-size .current-price { font-size: 32px; font-weight: 800; color: var(--color-primary, #2f57ef); }
+.rbt-price.large-size .off-price { font-size: 20px; margin-left: 10px; text-decoration: line-through; color: #9b9fb1; }
+.kx-rte img { max-width: 100%; height: auto; }
+.kx-rte { line-height: 1.8; color: var(--color-body, #6f7287); }
+
+/* ---- Sidebar search box ---- */
+.rbt-search-style { position: relative; }
+.rbt-search-style input {
+    width: 100%;
+    height: 50px;
+    padding: 0 50px 0 18px;
+    border: 1px solid var(--color-border, #e9ecef);
+    border-radius: 500px;
+    background: #fff;
+}
+.rbt-search-style .rbt-search-btn {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(90deg, var(--color-primary, #2f57ef), var(--color-secondary, #b966e7));
+    color: #fff;
+    cursor: pointer;
+}
+
+/* ---- Cart table ---- */
+.kx-cart-table { width: 100%; border-collapse: collapse; }
+.kx-cart-table th { text-align: left; padding: 16px; border-bottom: 2px solid var(--color-border, #e9ecef); color: var(--color-heading, #161439); }
+.kx-cart-table td { padding: 16px; border-bottom: 1px solid var(--color-border, #e9ecef); vertical-align: middle; }
+.kx-cart-thumb { width: 70px; height: 70px; object-fit: cover; border-radius: 10px; }
+.kx-cart-product { display: flex; align-items: center; gap: 14px; }
+
+/* ---- Auth / contact form cards reuse theme .rbt-contact-form ---- */
+.kx-auth-wrap { max-width: 1100px; margin: 0 auto; }
+
+/* ---- Profile avatar ---- */
+.kx-avatar {
+    width: 80px; height: 80px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 32px; font-weight: 700; color: #fff;
+    background: linear-gradient(135deg, var(--color-primary, #2f57ef), var(--color-secondary, #b966e7));
+}
+
+/* ---- Contact info items ---- */
+.kx-contact-item { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 18px; color: var(--color-body, #6f7287); }
+.kx-contact-ico {
+    flex: 0 0 auto; width: 42px; height: 42px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--primary-opacity, #2f57ef21); color: var(--color-primary, #2f57ef);
+}
+
+/* ---- Sidebar lists ---- */
+.kx-side-list { list-style: none; padding: 0; margin: 0; }
+.kx-side-list li { border-bottom: 1px solid var(--color-border, #e9ecef); }
+.kx-side-list li:last-child { border-bottom: none; }
+.kx-side-list a { display: flex; align-items: center; gap: 8px; padding: 12px 0; color: var(--color-heading, #161439); transition: color .3s, padding .3s; }
+.kx-side-list a:hover { color: var(--color-primary, #2f57ef); padding-left: 6px; }
+.kx-side-list i { color: var(--color-primary, #2f57ef); }
+
+/* ---- Blog detail ---- */
+.kx-blog-hero { width: 100%; border-radius: 16px; }
+.kx-blog-meta { color: var(--color-body, #6f7287); font-size: 14px; }
+.kx-blog-meta i { color: var(--color-primary, #2f57ef); margin-right: 4px; }
+
+/* ---- Status icons ---- */
+.kx-success-icon, .kx-empty-icon {
+    width: 90px; height: 90px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 44px; color: #fff;
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+}
+.kx-empty-icon { background: var(--primary-opacity, #2f57ef21); color: var(--color-primary, #2f57ef); }
+.kx-success-icon.kx-danger { background: linear-gradient(135deg, #ff6b6b, #e9573f); }

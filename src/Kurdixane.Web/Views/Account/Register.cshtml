@@ -1,0 +1,56 @@
+@model Kurdixane.Web.ViewModels.RegisterViewModel
+@{
+    ViewData["Title"] = "Kayıt Ol";
+}
+
+<partial name="_Breadcrumb" />
+
+<div class="rbt-elements-area bg-color-white rbt-section-gap">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="rbt-contact-form contact-form-style-1 max-width-auto">
+                    <h3 class="title">Kayıt Ol</h3>
+                    <form asp-controller="Account" asp-action="Register" method="post">
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb--10"></div>
+                        <div class="form-group">
+                            <input asp-for="FullName" type="text" />
+                            <label asp-for="FullName"></label>
+                            <span class="focus-border"></span>
+                            <span asp-validation-for="FullName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input asp-for="Email" type="email" />
+                            <label asp-for="Email"></label>
+                            <span class="focus-border"></span>
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input asp-for="Password" type="password" />
+                            <label asp-for="Password"></label>
+                            <span class="focus-border"></span>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input asp-for="ConfirmPassword" type="password" />
+                            <label asp-for="ConfirmPassword"></label>
+                            <span class="focus-border"></span>
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>
+                        <div class="form-submit-group">
+                            <button type="submit" class="rbt-btn btn-md btn-gradient hover-icon-reverse w-100">
+                                <span class="icon-reverse-wrapper">
+                                    <span class="btn-text">Kayıt Ol</span>
+                                    <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                    <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                    <p class="text-center mt--20 mb-0">Zaten hesabınız var mı? <a asp-action="Login" class="rbt-btn-link">Giriş Yapın</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

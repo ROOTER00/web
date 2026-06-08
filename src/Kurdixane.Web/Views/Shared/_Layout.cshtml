@@ -1,0 +1,90 @@
+@inject Kurdixane.Web.Services.ISettingService Settings
+@{
+    var settings = await Settings.GetAllAsync();
+    string siteTitle = settings.GetValueOrDefault("SiteTitle") ?? "Kurdixane";
+    string metaDesc = ViewData["MetaDescription"] as string ?? settings.GetValueOrDefault("MetaDescription") ?? "";
+    string metaKeywords = ViewData["MetaKeywords"] as string ?? settings.GetValueOrDefault("MetaKeywords") ?? "";
+    string pageTitle = ViewData["Title"] != null ? $"{ViewData["Title"]} | {siteTitle}" : siteTitle;
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>@pageTitle</title>
+    <meta name="description" content="@metaDesc" />
+    <meta name="keywords" content="@metaKeywords" />
+    <link rel="shortcut icon" type="image/x-icon" href="~/theme/images/favicon.png" />
+
+    <!-- Theme CSS (Histudy) -->
+    <link rel="stylesheet" href="~/theme/css/vendor/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/theme/css/vendor/slick.css" />
+    <link rel="stylesheet" href="~/theme/css/vendor/slick-theme.css" />
+    <link rel="stylesheet" href="~/theme/css/plugins/sal.css" />
+    <link rel="stylesheet" href="~/theme/css/plugins/feather.css" />
+    <link rel="stylesheet" href="~/theme/css/plugins/fontawesome.min.css" />
+    <link rel="stylesheet" href="~/theme/css/plugins/euclid-circulara.css" />
+    <link rel="stylesheet" href="~/theme/css/plugins/swiper.css" />
+    <link rel="stylesheet" href="~/theme/css/plugins/odometer.css" />
+    <link rel="stylesheet" href="~/theme/css/plugins/animation.css" />
+    <link rel="stylesheet" href="~/theme/css/plugins/bootstrap-select.min.css" />
+    <link rel="stylesheet" href="~/theme/css/plugins/jquery-ui.css" />
+    <link rel="stylesheet" href="~/theme/css/plugins/magnigy-popup.min.css" />
+    <link rel="stylesheet" href="~/theme/css/plugins/plyr.css" />
+    <link rel="stylesheet" href="~/theme/css/styles.css" />
+
+    <!-- Project overrides -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body class="rbt-header-sticky">
+
+    <!-- Dark/Light switcher -->
+    <div id="my_switcher" class="my_switcher">
+        <ul>
+            <li>
+                <a href="javascript: void(0);" data-theme="light" class="setColor light">
+                    <img src="~/theme/images/about/sun-01.svg" alt="Light Mode"><span title="Light Mode"> Light</span>
+                </a>
+            </li>
+            <li>
+                <a href="javascript: void(0);" data-theme="dark" class="setColor dark">
+                    <img src="~/theme/images/about/vector.svg" alt="Dark Mode"><span title="Dark Mode"> Dark</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    @await Component.InvokeAsync("Header")
+
+    <main role="main">
+        @if (TempData["Success"] != null)
+        {
+            <div class="container mt--20"><div class="alert alert-success alert-dismissible fade show" role="alert">@TempData["Success"]<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div></div>
+        }
+        @if (TempData["Info"] != null)
+        {
+            <div class="container mt--20"><div class="alert alert-info alert-dismissible fade show" role="alert">@TempData["Info"]<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div></div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="container mt--20"><div class="alert alert-danger alert-dismissible fade show" role="alert">@TempData["Error"]<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div></div>
+        }
+        @RenderBody()
+    </main>
+
+    @await Component.InvokeAsync("Footer")
+
+    <!-- Back To Top -->
+    <div class="rbt-progress-parent">
+        <svg class="rbt-back-circle svg-inner" width="100%" height="100%" viewBox="-1 -1 102 102">
+            <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+        </svg>
+    </div>
+
+    <partial name="_ThemeScripts" />
+    <partial name="_ValidationScriptsPartial" />
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

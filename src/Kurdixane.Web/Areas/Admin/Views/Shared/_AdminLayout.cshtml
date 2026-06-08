@@ -1,0 +1,71 @@
+@{
+    string ctrl = (ViewContext.RouteData.Values["controller"] ?? "").ToString()!;
+    string Active(string c) => ctrl.Equals(c, StringComparison.OrdinalIgnoreCase) ? "active" : "";
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] | Kurdixane Admin</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+</head>
+<body class="admin-body">
+    <aside class="admin-sidebar" id="adminSidebar">
+        <div class="admin-brand">
+            <i class="fa-solid fa-store me-2"></i><span>Kurdixane</span>
+        </div>
+        <nav class="admin-nav">
+            <a class="@Active("Dashboard")" asp-area="Admin" asp-controller="Dashboard" asp-action="Index"><i class="fa-solid fa-gauge"></i> Gösterge Paneli</a>
+            <a class="@Active("Products")" asp-area="Admin" asp-controller="Products" asp-action="Index"><i class="fa-solid fa-box"></i> Ürünler</a>
+            <a class="@Active("Categories")" asp-area="Admin" asp-controller="Categories" asp-action="Index"><i class="fa-solid fa-tags"></i> Kategoriler</a>
+            <a class="@Active("Orders")" asp-area="Admin" asp-controller="Orders" asp-action="Index"><i class="fa-solid fa-receipt"></i> Siparişler</a>
+            <a class="@Active("Sliders")" asp-area="Admin" asp-controller="Sliders" asp-action="Index"><i class="fa-solid fa-images"></i> Slider</a>
+            <a class="@Active("Blog")" asp-area="Admin" asp-controller="Blog" asp-action="Index"><i class="fa-solid fa-blog"></i> Blog</a>
+            <a class="@Active("Pages")" asp-area="Admin" asp-controller="Pages" asp-action="Index"><i class="fa-solid fa-file-lines"></i> Sayfalar</a>
+            <a class="@Active("Menu")" asp-area="Admin" asp-controller="Menu" asp-action="Index"><i class="fa-solid fa-bars"></i> Menü</a>
+            <a class="@Active("Messages")" asp-area="Admin" asp-controller="Messages" asp-action="Index"><i class="fa-solid fa-envelope"></i> Mesajlar</a>
+            <a class="@Active("Users")" asp-area="Admin" asp-controller="Users" asp-action="Index"><i class="fa-solid fa-users"></i> Kullanıcılar</a>
+            <a class="@Active("Settings")" asp-area="Admin" asp-controller="Settings" asp-action="Index"><i class="fa-solid fa-gear"></i> Ayarlar</a>
+        </nav>
+    </aside>
+
+    <div class="admin-main">
+        <header class="admin-topbar">
+            <button class="btn btn-sm btn-light" id="sidebarToggle"><i class="fa-solid fa-bars"></i></button>
+            <div class="ms-auto d-flex align-items-center gap-3">
+                <a asp-area="" asp-controller="Home" asp-action="Index" target="_blank" class="text-decoration-none"><i class="fa-solid fa-globe me-1"></i>Siteyi Gör</a>
+                <span class="text-muted"><i class="fa-solid fa-user-shield me-1"></i>@User.GetDisplayName()</span>
+                <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" class="m-0">
+                    @Html.AntiForgeryToken()
+                    <button class="btn btn-sm btn-outline-danger" type="submit">Çıkış</button>
+                </form>
+            </div>
+        </header>
+
+        <main class="admin-content">
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show">@TempData["Success"]<button class="btn-close" data-bs-dismiss="alert"></button></div>
+            }
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show">@TempData["Error"]<button class="btn-close" data-bs-dismiss="alert"></button></div>
+            }
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('sidebarToggle')?.addEventListener('click', function () {
+            document.getElementById('adminSidebar').classList.toggle('collapsed');
+            document.querySelector('.admin-main').classList.toggle('expanded');
+        });
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

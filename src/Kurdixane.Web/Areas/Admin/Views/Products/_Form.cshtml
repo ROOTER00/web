@@ -1,0 +1,73 @@
+@model Kurdixane.Web.Models.Product
+@{
+    var categories = ViewBag.Categories as Microsoft.AspNetCore.Mvc.Rendering.SelectList;
+}
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<input type="hidden" asp-for="Id" />
+<input type="hidden" asp-for="Slug" />
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="admin-card">
+            <div class="card-body">
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label">Ürün Adı</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Sku" class="form-label">Ürün Kodu (SKU)</label>
+                        <input asp-for="Sku" class="form-control" />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="CategoryId" class="form-label">Kategori</label>
+                        <select asp-for="CategoryId" asp-items="categories" class="form-select"><option value="">Seçiniz</option></select>
+                        <span asp-validation-for="CategoryId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="ShortDescription" class="form-label">Kısa Açıklama</label>
+                    <textarea asp-for="ShortDescription" class="form-control" rows="2"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label">Açıklama</label>
+                    <textarea asp-for="Description" class="form-control ckeditor"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="admin-card">
+            <div class="card-head"><h5>SEO</h5></div>
+            <div class="card-body">
+                <div class="mb-3"><label asp-for="MetaTitle" class="form-label">Meta Başlık</label><input asp-for="MetaTitle" class="form-control" /></div>
+                <div class="mb-3"><label asp-for="MetaDescription" class="form-label">Meta Açıklama</label><textarea asp-for="MetaDescription" class="form-control" rows="2"></textarea></div>
+                <div class="mb-3"><label asp-for="MetaKeywords" class="form-label">Meta Anahtar Kelimeler</label><input asp-for="MetaKeywords" class="form-control" /></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="admin-card">
+            <div class="card-head"><h5>Yayın</h5></div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6 mb-3"><label asp-for="Price" class="form-label">Fiyat (₺)</label><input asp-for="Price" class="form-control" type="number" step="0.01" /></div>
+                    <div class="col-6 mb-3"><label asp-for="OldPrice" class="form-label">Eski Fiyat</label><input asp-for="OldPrice" class="form-control" type="number" step="0.01" /></div>
+                </div>
+                <div class="row">
+                    <div class="col-6 mb-3"><label asp-for="Stock" class="form-label">Stok</label><input asp-for="Stock" class="form-control" type="number" /></div>
+                    <div class="col-6 mb-3"><label asp-for="DisplayOrder" class="form-label">Sıra</label><input asp-for="DisplayOrder" class="form-control" type="number" /></div>
+                </div>
+                <div class="form-check mb-2"><input asp-for="IsActive" class="form-check-input" /><label asp-for="IsActive" class="form-check-label">Aktif</label></div>
+                <div class="form-check mb-3"><input asp-for="IsFeatured" class="form-check-input" /><label asp-for="IsFeatured" class="form-check-label">Öne Çıkan</label></div>
+            </div>
+        </div>
+        <div class="admin-card">
+            <div class="card-head"><h5>Görsel</h5></div>
+            <div class="card-body">
+                <label asp-for="ImageUrl" class="form-label">Görsel URL</label>
+                <input asp-for="ImageUrl" class="form-control" placeholder="/img/products/..." />
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary w-100"><i class="fa-solid fa-floppy-disk me-1"></i>Kaydet</button>
+        <a asp-action="Index" class="btn btn-link w-100 mt-2">İptal</a>
+    </div>
+</div>

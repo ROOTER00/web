@@ -1,0 +1,19 @@
+@model Kurdixane.Web.Models.Page
+@{
+    ViewData["Title"] = Model.MetaTitle ?? Model.Title;
+    ViewData["MetaDescription"] = Model.MetaDescription;
+    ViewData["MetaKeywords"] = Model.MetaKeywords;
+    ViewData["BcTitle"] = Model.Title;
+}
+
+<partial name="_Breadcrumb" />
+
+<div class="rbt-page-area bg-color-white rbt-section-gap">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="kx-rte">@Html.Raw(Model.Content)</div>
+            </div>
+        </div>
+    </div>
+</div>

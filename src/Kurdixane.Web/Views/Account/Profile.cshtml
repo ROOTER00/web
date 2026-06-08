@@ -1,0 +1,57 @@
+@model Kurdixane.Web.Models.User
+@{
+    ViewData["Title"] = "Hesabım";
+    var orders = ViewBag.Orders as List<Kurdixane.Web.Models.Order> ?? new();
+}
+
+<partial name="_Breadcrumb" />
+
+<div class="rbt-dashboard-area bg-color-white rbt-section-gap">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-lg-4">
+                <div class="kx-summary-card text-center">
+                    <div class="kx-avatar mb--15">@(string.IsNullOrEmpty(Model?.FullName) ? "K" : Model.FullName.Substring(0,1).ToUpper())</div>
+                    <h5 class="mb--5">@Model?.FullName</h5>
+                    <p class="rbt-card-text mb--5">@Model?.Email</p>
+                    @if (!string.IsNullOrEmpty(Model?.Phone))
+                    {
+                        <p class="rbt-card-text">@Model.Phone</p>
+                    }
+                    <form asp-controller="Account" asp-action="Logout" method="post" class="mt--15">
+                        @Html.AntiForgeryToken()
+                        <button class="rbt-btn-link color-danger" type="submit"><i class="feather-log-out"></i> Çıkış Yap</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="kx-summary-card">
+                    <h4>Siparişlerim</h4>
+                    @if (orders.Count == 0)
+                    {
+                        <p class="rbt-card-text">Henüz siparişiniz bulunmuyor.</p>
+                    }
+                    else
+                    {
+                        <div class="table-responsive">
+                            <table class="kx-cart-table">
+                                <thead><tr><th>Sipariş No</th><th>Tarih</th><th>Tutar</th><th>Durum</th></tr></thead>
+                                <tbody>
+                                    @foreach (var o in orders)
+                                    {
+                                        <tr>
+                                            <td class="fw-semibold">@o.OrderNumber</td>
+                                            <td>@o.CreatedAt.ToString("dd.MM.yyyy")</td>
+                                            <td>@o.TotalAmount.ToString("N2") ₺</td>
+                                            <td><span class="rbt-badge variation-02 bg-color-primary-opacity color-primary">@o.Status</span></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
