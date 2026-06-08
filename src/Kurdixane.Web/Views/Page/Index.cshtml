@@ -3,18 +3,17 @@
     ViewData["Title"] = Model.MetaTitle ?? Model.Title;
     ViewData["MetaDescription"] = Model.MetaDescription;
     ViewData["MetaKeywords"] = Model.MetaKeywords;
+    ViewData["BcTitle"] = Model.Title;
 }
-<div class="page-head">
+
+<partial name="_Breadcrumb" />
+
+<div class="rbt-page-area bg-color-white rbt-section-gap">
     <div class="container">
-        <h1>@Model.Title</h1>
-        <nav><ol class="breadcrumb mb-0">
-            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Anasayfa</a></li>
-            <li class="breadcrumb-item active">@Model.Title</li>
-        </ol></nav>
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="kx-rte">@Html.Raw(Model.Content)</div>
+            </div>
+        </div>
     </div>
 </div>
-<section class="section">
-    <div class="container">
-        <div class="page-content">@Html.Raw(Model.Content)</div>
-    </div>
-</section>

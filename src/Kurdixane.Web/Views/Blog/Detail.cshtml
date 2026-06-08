@@ -4,39 +4,43 @@
     ViewData["MetaDescription"] = Model.MetaDescription ?? Model.Summary;
     ViewData["MetaKeywords"] = Model.MetaKeywords;
     var recent = ViewBag.RecentPosts as List<Kurdixane.Web.Models.BlogPost> ?? new();
+    ViewData["BcTitle"] = Model.Title;
+    ViewData["BcCrumbs"] = new List<(string Text, string? Url)>
+    {
+        ("Blog", Url.Action("Index", "Blog")),
+        (Model.Title, null)
+    };
 }
-<div class="page-head">
+
+<partial name="_Breadcrumb" />
+
+<div class="rbt-blog-details-area bg-color-white rbt-section-gap">
     <div class="container">
-        <h1>@Model.Title</h1>
-        <nav><ol class="breadcrumb mb-0">
-            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Anasayfa</a></li>
-            <li class="breadcrumb-item"><a asp-controller="Blog" asp-action="Index">Blog</a></li>
-            <li class="breadcrumb-item active">@Model.Title</li>
-        </ol></nav>
-    </div>
-</div>
-<section class="section">
-    <div class="container">
-        <div class="row g-4">
+        <div class="row g-5">
             <div class="col-lg-8">
-                <img src="@(string.IsNullOrEmpty(Model.ImageUrl) ? "/img/blog/post-1.svg" : Model.ImageUrl)" alt="@Model.Title" class="img-fluid rounded mb-4" />
-                <div class="blog-meta mb-3">
-                    <i class="fa-regular fa-calendar me-1"></i>@((Model.PublishedAt ?? Model.CreatedAt).ToString("dd.MM.yyyy"))
-                    @if (!string.IsNullOrEmpty(Model.Author)) { <span class="ms-3"><i class="fa-regular fa-user me-1"></i>@Model.Author</span> }
+                <div class="kx-blog-detail">
+                    <img src="@(string.IsNullOrEmpty(Model.ImageUrl) ? "/img/blog/post-1.svg" : Model.ImageUrl)" alt="@Model.Title" class="kx-blog-hero mb--30" />
+                    <div class="kx-blog-meta mb--20">
+                        <span><i class="feather-calendar"></i> @((Model.PublishedAt ?? Model.CreatedAt).ToString("dd.MM.yyyy"))</span>
+                        @if (!string.IsNullOrEmpty(Model.Author))
+                        {
+                            <span class="ms-3"><i class="feather-user"></i> @Model.Author</span>
+                        }
+                    </div>
+                    <div class="kx-rte">@Html.Raw(Model.Content)</div>
                 </div>
-                <div class="blog-content">@Html.Raw(Model.Content)</div>
             </div>
             <aside class="col-lg-4">
-                <div class="sidebar-box">
-                    <h6>Son Yazılar</h6>
-                    <ul class="cat-list">
+                <div class="kx-summary-card">
+                    <h5 class="mb--20">Son Yazılar</h5>
+                    <ul class="kx-side-list">
                         @foreach (var rp in recent)
                         {
-                            <li><a asp-controller="Blog" asp-action="Detail" asp-route-slug="@rp.Slug">@rp.Title</a></li>
+                            <li><a asp-controller="Blog" asp-action="Detail" asp-route-slug="@rp.Slug"><i class="feather-chevron-right"></i> @rp.Title</a></li>
                         }
                     </ul>
                 </div>
             </aside>
         </div>
     </div>
-</section>
+</div>

@@ -2,47 +2,40 @@
 @{
     ViewData["Title"] = Model.CurrentCategory?.Name ?? (string.IsNullOrEmpty(Model.Search) ? "Ürünler" : $"Arama: {Model.Search}");
     var p = Model.Products;
+    string listController = string.IsNullOrEmpty(Model.CategorySlug) ? "Product" : "Category";
 }
 
-<div class="page-head">
-    <div class="container">
-        <h1>@ViewData["Title"]</h1>
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Anasayfa</a></li>
-                <li class="breadcrumb-item active">@ViewData["Title"]</li>
-            </ol>
-        </nav>
-    </div>
-</div>
+<partial name="_Breadcrumb" />
 
-<section class="section">
+<div class="rbt-course-area bg-color-white rbt-section-gap">
     <div class="container">
-        <div class="row">
-            <aside class="col-lg-3">
-                <div class="sidebar-box">
-                    <h6>Kategoriler</h6>
-                    <ul class="cat-list">
-                        <li><a asp-controller="Product" asp-action="Index" class="@(string.IsNullOrEmpty(Model.CategorySlug) ? "active" : "")">Tümü</a></li>
+        <div class="row g-5">
+            <aside class="col-lg-3 order-2 order-lg-1">
+                <div class="kx-summary-card mb--30">
+                    <h4>Kategoriler</h4>
+                    <ul class="rbt-list-style-1">
+                        <li><a asp-controller="Product" asp-action="Index" class="@(string.IsNullOrEmpty(Model.CategorySlug) ? "fw-bold" : "")"><i class="feather-chevron-right"></i> Tümü</a></li>
                         @foreach (var cat in Model.Categories)
                         {
-                            <li><a asp-controller="Category" asp-action="Index" asp-route-slug="@cat.Slug" class="@(Model.CategorySlug == cat.Slug ? "active" : "")">@cat.Name</a></li>
+                            <li><a asp-controller="Category" asp-action="Index" asp-route-slug="@cat.Slug" class="@(Model.CategorySlug == cat.Slug ? "fw-bold" : "")"><i class="feather-chevron-right"></i> @cat.Name</a></li>
                         }
                     </ul>
                 </div>
-                <div class="sidebar-box">
-                    <h6>Ürün Ara</h6>
+                <div class="kx-summary-card">
+                    <h4>Ürün Ara</h4>
                     <form asp-controller="Product" asp-action="Index" method="get">
-                        <div class="input-group">
-                            <input class="form-control" type="search" name="search" value="@Model.Search" placeholder="Ara..." />
-                            <button class="btn btn-primary" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        <div class="rbt-search-style">
+                            <input type="search" name="search" value="@Model.Search" placeholder="Ara..." />
+                            <button class="rbt-search-btn" type="submit"><i class="feather-search"></i></button>
                         </div>
                     </form>
                 </div>
             </aside>
-            <div class="col-lg-9">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <span class="text-muted">@p.TotalCount ürün bulundu</span>
+            <div class="col-lg-9 order-1 order-lg-2">
+                <div class="rbt-sorting-list d-flex justify-content-between align-items-center mb--30 flex-wrap">
+                    <div class="rbt-short-item">
+                        <span class="rbt-result-count">@p.TotalCount ürün bulundu</span>
+                    </div>
                 </div>
                 @if (p.Items.Count == 0)
                 {
@@ -53,25 +46,25 @@
                     <div class="row g-4">
                         @foreach (var product in p.Items)
                         {
-                            <div class="col-6 col-md-4"><partial name="_ProductCard" model="product" /></div>
+                            <div class="col-lg-4 col-md-6 col-sm-6 col-12"><partial name="_ProductCard" model="product" /></div>
                         }
                     </div>
 
                     @if (p.TotalPages > 1)
                     {
-                        <nav class="mt-4">
-                            <ul class="pagination justify-content-center">
-                                <li class="page-item @(p.HasPrevious ? "" : "disabled")">
-                                    <a class="page-link" asp-action="Index" asp-controller="@(string.IsNullOrEmpty(Model.CategorySlug) ? "Product" : "Category")" asp-route-slug="@Model.CategorySlug" asp-route-category="@Model.CategorySlug" asp-route-search="@Model.Search" asp-route-page="@(p.Page - 1)">Önceki</a>
+                        <nav class="mt--40">
+                            <ul class="rbt-pagination justify-content-center">
+                                <li class="@(p.HasPrevious ? "" : "disabled")">
+                                    <a asp-action="Index" asp-controller="@listController" asp-route-slug="@Model.CategorySlug" asp-route-search="@Model.Search" asp-route-page="@(p.Page - 1)"><i class="feather-chevron-left"></i></a>
                                 </li>
                                 @for (int i = 1; i <= p.TotalPages; i++)
                                 {
-                                    <li class="page-item @(i == p.Page ? "active" : "")">
-                                        <a class="page-link" asp-action="Index" asp-controller="@(string.IsNullOrEmpty(Model.CategorySlug) ? "Product" : "Category")" asp-route-slug="@Model.CategorySlug" asp-route-category="@Model.CategorySlug" asp-route-search="@Model.Search" asp-route-page="@i">@i</a>
+                                    <li class="@(i == p.Page ? "active" : "")">
+                                        <a asp-action="Index" asp-controller="@listController" asp-route-slug="@Model.CategorySlug" asp-route-search="@Model.Search" asp-route-page="@i">@i</a>
                                     </li>
                                 }
-                                <li class="page-item @(p.HasNext ? "" : "disabled")">
-                                    <a class="page-link" asp-action="Index" asp-controller="@(string.IsNullOrEmpty(Model.CategorySlug) ? "Product" : "Category")" asp-route-slug="@Model.CategorySlug" asp-route-category="@Model.CategorySlug" asp-route-search="@Model.Search" asp-route-page="@(p.Page + 1)">Sonraki</a>
+                                <li class="@(p.HasNext ? "" : "disabled")">
+                                    <a asp-action="Index" asp-controller="@listController" asp-route-slug="@Model.CategorySlug" asp-route-search="@Model.Search" asp-route-page="@(p.Page + 1)"><i class="feather-chevron-right"></i></a>
                                 </li>
                             </ul>
                         </nav>
@@ -80,4 +73,4 @@
             </div>
         </div>
     </div>
-</section>
+</div>

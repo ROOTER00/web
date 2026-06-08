@@ -3,56 +3,66 @@
     ViewData["Title"] = "Blog";
     var p = Model.Posts;
 }
-<div class="page-head"><div class="container"><h1>Blog</h1></div></div>
-<section class="section">
+
+<partial name="_Breadcrumb" />
+
+<div class="rbt-blog-area bg-color-white rbt-section-gap">
     <div class="container">
-        <div class="row g-4">
+        <div class="row g-5">
             <div class="col-lg-8">
                 <div class="row g-4">
                     @if (p.Items.Count == 0)
                     {
-                        <p class="text-muted">Henüz yazı bulunmuyor.</p>
+                        <p class="rbt-card-text">Henüz yazı bulunmuyor.</p>
                     }
                     @foreach (var post in p.Items)
                     {
                         <div class="col-md-6">
-                            <article class="blog-card">
-                                <a asp-controller="Blog" asp-action="Detail" asp-route-slug="@post.Slug" class="blog-thumb d-block">
-                                    <img src="@(string.IsNullOrEmpty(post.ImageUrl) ? "/img/blog/post-1.svg" : post.ImageUrl)" alt="@post.Title" />
-                                </a>
-                                <div class="blog-body">
-                                    <div class="blog-meta mb-2"><i class="fa-regular fa-calendar me-1"></i>@((post.PublishedAt ?? post.CreatedAt).ToString("dd.MM.yyyy"))</div>
-                                    <h5><a asp-controller="Blog" asp-action="Detail" asp-route-slug="@post.Slug" class="text-dark">@post.Title</a></h5>
-                                    <p class="text-muted small">@post.Summary</p>
-                                    <a asp-controller="Blog" asp-action="Detail" asp-route-slug="@post.Slug" class="btn btn-sm btn-outline-primary">Devamını Oku</a>
+                            <div class="rbt-card variation-02 rbt-hover">
+                                <div class="rbt-card-img">
+                                    <a asp-controller="Blog" asp-action="Detail" asp-route-slug="@post.Slug">
+                                        <img src="@(string.IsNullOrEmpty(post.ImageUrl) ? "/img/blog/post-1.svg" : post.ImageUrl)" alt="@post.Title" />
+                                    </a>
                                 </div>
-                            </article>
+                                <div class="rbt-card-body">
+                                    <div class="rbt-card-bottom mb--10">
+                                        <span class="rbt-meta"><i class="feather-calendar"></i> @((post.PublishedAt ?? post.CreatedAt).ToString("dd.MM.yyyy"))</span>
+                                    </div>
+                                    <h4 class="rbt-card-title"><a asp-controller="Blog" asp-action="Detail" asp-route-slug="@post.Slug">@post.Title</a></h4>
+                                    <p class="rbt-card-text">@post.Summary</p>
+                                    <a asp-controller="Blog" asp-action="Detail" asp-route-slug="@post.Slug" class="rbt-btn-link">Devamını Oku <i class="feather-arrow-right"></i></a>
+                                </div>
+                            </div>
                         </div>
                     }
                 </div>
                 @if (p.TotalPages > 1)
                 {
-                    <nav class="mt-4">
-                        <ul class="pagination justify-content-center">
-                            @for (int i = 1; i <= p.TotalPages; i++)
-                            {
-                                <li class="page-item @(i == p.Page ? "active" : "")"><a class="page-link" asp-action="Index" asp-route-page="@i">@i</a></li>
-                            }
-                        </ul>
-                    </nav>
+                    <div class="row">
+                        <div class="col-lg-12 mt--40">
+                            <nav>
+                                <ul class="rbt-pagination justify-content-center">
+                                    @for (int i = 1; i <= p.TotalPages; i++)
+                                    {
+                                        <li class="@(i == p.Page ? "active" : "")"><a asp-action="Index" asp-route-page="@i">@i</a></li>
+                                    }
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
                 }
             </div>
             <aside class="col-lg-4">
-                <div class="sidebar-box">
-                    <h6>Son Yazılar</h6>
-                    <ul class="cat-list">
+                <div class="kx-summary-card">
+                    <h5 class="mb--20">Son Yazılar</h5>
+                    <ul class="kx-side-list">
                         @foreach (var rp in Model.RecentPosts)
                         {
-                            <li><a asp-controller="Blog" asp-action="Detail" asp-route-slug="@rp.Slug">@rp.Title</a></li>
+                            <li><a asp-controller="Blog" asp-action="Detail" asp-route-slug="@rp.Slug"><i class="feather-chevron-right"></i> @rp.Title</a></li>
                         }
                     </ul>
                 </div>
             </aside>
         </div>
     </div>
-</section>
+</div>

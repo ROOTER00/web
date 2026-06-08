@@ -1,36 +1,53 @@
 @model Kurdixane.Web.Models.Product
-<div class="product-card">
-    <div class="product-thumb">
+@{
+    bool onSale = Model.OldPrice.HasValue && Model.OldPrice > Model.Price;
+    string img = string.IsNullOrEmpty(Model.ImageUrl) ? "/img/products/placeholder-1.svg" : Model.ImageUrl;
+}
+<div class="rbt-card variation-01 rbt-hover">
+    <div class="rbt-card-img">
         <a asp-controller="Product" asp-action="Detail" asp-route-slug="@Model.Slug">
-            <img src="@(string.IsNullOrEmpty(Model.ImageUrl) ? "/img/products/placeholder-1.svg" : Model.ImageUrl)" alt="@Model.Name" />
-        </a>
-        @if (Model.OldPrice.HasValue && Model.OldPrice > Model.Price)
-        {
-            <span class="product-badge sale">İndirim</span>
-        }
-        else if (Model.IsFeatured)
-        {
-            <span class="product-badge">Öne Çıkan</span>
-        }
-    </div>
-    <div class="product-body">
-        <span class="product-cat">@(Model.Category?.Name)</span>
-        <h3 class="product-title">
-            <a asp-controller="Product" asp-action="Detail" asp-route-slug="@Model.Slug">@Model.Name</a>
-        </h3>
-        <div class="product-price">
-            <span class="price">@Model.Price.ToString("N2") ₺</span>
-            @if (Model.OldPrice.HasValue && Model.OldPrice > Model.Price)
+            <img src="@img" alt="@Model.Name" />
+            @if (onSale)
             {
-                <span class="old-price">@Model.OldPrice.Value.ToString("N2") ₺</span>
+                <div class="rbt-badge-3 bg-color-primary-opacity">
+                    <span>İndirim</span>
+                </div>
             }
+            else if (Model.IsFeatured)
+            {
+                <div class="rbt-badge-3 bg-color-warning-opacity">
+                    <span>Öne Çıkan</span>
+                </div>
+            }
+        </a>
+    </div>
+    <div class="rbt-card-body">
+        @if (Model.Category != null)
+        {
+            <div class="rbt-card-top">
+                <div class="rbt-review">
+                    <span class="rbt-category"><i class="feather-tag"></i> @Model.Category.Name</span>
+                </div>
+            </div>
+        }
+        <h4 class="rbt-card-title">
+            <a asp-controller="Product" asp-action="Detail" asp-route-slug="@Model.Slug">@Model.Name</a>
+        </h4>
+        <div class="rbt-card-bottom">
+            <div class="rbt-price">
+                <span class="current-price">@Model.Price.ToString("N2") ₺</span>
+                @if (onSale)
+                {
+                    <span class="off-price">@Model.OldPrice!.Value.ToString("N2") ₺</span>
+                }
+            </div>
+            <form asp-controller="Cart" asp-action="Add" method="post" class="rbt-card-cart-form">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="productId" value="@Model.Id" />
+                <button type="submit" class="rbt-btn-link" title="Sepete Ekle">
+                    <i class="feather-shopping-cart"></i> Sepete Ekle
+                </button>
+            </form>
         </div>
-        <form asp-controller="Cart" asp-action="Add" method="post" class="add-cart">
-            @Html.AntiForgeryToken()
-            <input type="hidden" name="productId" value="@Model.Id" />
-            <button type="submit" class="btn btn-primary btn-sm w-100">
-                <i class="fa-solid fa-cart-plus me-1"></i> Sepete Ekle
-            </button>
-        </form>
     </div>
 </div>

@@ -3,74 +3,69 @@
     ViewData["Title"] = "Sipariş Bilgileri";
 }
 
-<div class="page-head">
-    <div class="container"><h1>Sipariş Bilgileri</h1></div>
-</div>
+<partial name="_Breadcrumb" />
 
-<section class="section">
+<div class="rbt-checkout-area bg-color-white rbt-section-gap">
     <div class="container">
         <form asp-controller="Checkout" asp-action="Index" method="post">
             @Html.AntiForgeryToken()
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="row g-4">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb--20"></div>
+            <div class="row g-5">
                 <div class="col-lg-7">
-                    <div class="sidebar-box">
-                        <h6>Teslimat Bilgileri</h6>
-                        <div class="mb-3">
-                            <label asp-for="CustomerName" class="form-label"></label>
-                            <input asp-for="CustomerName" class="form-control" />
-                            <span asp-validation-for="CustomerName" class="text-danger"></span>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="Email" class="form-label"></label>
-                                <input asp-for="Email" class="form-control" />
-                                <span asp-validation-for="Email" class="text-danger"></span>
+                    <div class="kx-summary-card">
+                        <h4>Teslimat Bilgileri</h4>
+                        <div class="rbt-contact-form contact-form-style-1">
+                            <div class="form-group">
+                                <input asp-for="CustomerName" />
+                                <label asp-for="CustomerName"></label>
+                                <span asp-validation-for="CustomerName" class="text-danger"></span>
                             </div>
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="Phone" class="form-label"></label>
-                                <input asp-for="Phone" class="form-control" />
-                                <span asp-validation-for="Phone" class="text-danger"></span>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input asp-for="Email" />
+                                        <label asp-for="Email"></label>
+                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input asp-for="Phone" />
+                                        <label asp-for="Phone"></label>
+                                        <span asp-validation-for="Phone" class="text-danger"></span>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="mb-3">
-                            <label asp-for="Address" class="form-label"></label>
-                            <textarea asp-for="Address" class="form-control" rows="2"></textarea>
-                            <span asp-validation-for="Address" class="text-danger"></span>
-                        </div>
-                        <div class="mb-3">
-                            <label asp-for="City" class="form-label"></label>
-                            <input asp-for="City" class="form-control" />
-                        </div>
-                        <div class="mb-3">
-                            <label asp-for="Note" class="form-label"></label>
-                            <textarea asp-for="Note" class="form-control" rows="2"></textarea>
+                            <div class="form-group">
+                                <textarea asp-for="Address" rows="2"></textarea>
+                                <label asp-for="Address"></label>
+                                <span asp-validation-for="Address" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <input asp-for="City" />
+                                <label asp-for="City"></label>
+                            </div>
+                            <div class="form-group">
+                                <textarea asp-for="Note" rows="2"></textarea>
+                                <label asp-for="Note"></label>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-5">
-                    <div class="cart-summary">
-                        <h5 class="mb-3">Sipariş Özeti</h5>
+                    <div class="kx-summary-card">
+                        <h4>Sipariş Özeti</h4>
                         @foreach (var line in Model.Cart.Lines)
                         {
-                            <div class="d-flex justify-content-between mb-2 small">
-                                <span>@line.Name × @line.Quantity</span>
-                                <span>@line.LineTotal.ToString("N2") ₺</span>
-                            </div>
+                            <div class="kx-summary-row"><span>@line.Name × @line.Quantity</span><span>@line.LineTotal.ToString("N2") ₺</span></div>
                         }
-                        <hr />
-                        <div class="d-flex justify-content-between mb-2"><span>Ara Toplam</span><span>@Model.Cart.Subtotal.ToString("N2") ₺</span></div>
-                        <div class="d-flex justify-content-between mb-2"><span>Kargo</span><span>@(Model.Cart.ShippingCost == 0 ? "Ücretsiz" : Model.Cart.ShippingCost.ToString("N2") + " ₺")</span></div>
-                        <hr />
-                        <div class="d-flex justify-content-between fw-bold fs-5"><span>Toplam</span><span class="text-primary">@Model.Cart.Total.ToString("N2") ₺</span></div>
-                        <button type="submit" class="btn btn-primary w-100 mt-3">Siparişi Onayla</button>
+                        <div class="kx-summary-row" style="border-top:1px solid var(--color-border,#e9ecef);margin-top:8px;padding-top:12px;"><span>Ara Toplam</span><span>@Model.Cart.Subtotal.ToString("N2") ₺</span></div>
+                        <div class="kx-summary-row"><span>Kargo</span><span>@(Model.Cart.ShippingCost == 0 ? "Ücretsiz" : Model.Cart.ShippingCost.ToString("N2") + " ₺")</span></div>
+                        <div class="kx-summary-total"><span>Toplam</span><span>@Model.Cart.Total.ToString("N2") ₺</span></div>
+                        <button type="submit" class="rbt-btn btn-gradient w-100 mt--20">Siparişi Onayla</button>
                     </div>
                 </div>
             </div>
         </form>
     </div>
-</section>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+</div>

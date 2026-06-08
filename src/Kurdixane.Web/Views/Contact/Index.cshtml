@@ -3,50 +3,76 @@
     ViewData["Title"] = "İletişim";
     var settings = ViewBag.Settings as Dictionary<string, string?> ?? new();
 }
-<div class="page-head"><div class="container"><h1>İletişim</h1></div></div>
-<section class="section">
+
+<partial name="_Breadcrumb" />
+
+<div class="rbt-contact-area bg-color-white rbt-section-gap">
     <div class="container">
-        <div class="row g-4">
+        <div class="row g-5">
             <div class="col-lg-5">
-                <div class="sidebar-box">
-                    <h6>İletişim Bilgileri</h6>
-                    <p><i class="fa-solid fa-location-dot me-2 text-primary"></i>@settings.GetValueOrDefault("ContactAddress")</p>
-                    <p><i class="fa-solid fa-phone me-2 text-primary"></i>@settings.GetValueOrDefault("ContactPhone")</p>
-                    <p><i class="fa-solid fa-envelope me-2 text-primary"></i>@settings.GetValueOrDefault("ContactEmail")</p>
+                <div class="kx-summary-card h-100">
+                    <h4>İletişim Bilgileri</h4>
+                    <div class="kx-contact-item">
+                        <span class="kx-contact-ico"><i class="feather-map-pin"></i></span>
+                        <span>@settings.GetValueOrDefault("ContactAddress")</span>
+                    </div>
+                    <div class="kx-contact-item">
+                        <span class="kx-contact-ico"><i class="feather-phone"></i></span>
+                        <span>@settings.GetValueOrDefault("ContactPhone")</span>
+                    </div>
+                    <div class="kx-contact-item">
+                        <span class="kx-contact-ico"><i class="feather-mail"></i></span>
+                        <span>@settings.GetValueOrDefault("ContactEmail")</span>
+                    </div>
                 </div>
             </div>
             <div class="col-lg-7">
-                <div class="sidebar-box">
-                    <h6>Bize Yazın</h6>
+                <div class="rbt-contact-form contact-form-style-1 kx-summary-card">
+                    <h4>Bize Yazın</h4>
                     <form asp-controller="Contact" asp-action="Index" method="post">
                         @Html.AntiForgeryToken()
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb--10"></div>
                         <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="Name" class="form-label">Ad Soyad</label>
-                                <input asp-for="Name" class="form-control" />
-                                <span asp-validation-for="Name" class="text-danger"></span>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input asp-for="Name" type="text" />
+                                    <label asp-for="Name">Ad Soyad</label>
+                                    <span class="focus-border"></span>
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
                             </div>
-                            <div class="col-md-6 mb-3">
-                                <label asp-for="Email" class="form-label">E-posta</label>
-                                <input asp-for="Email" class="form-control" />
-                                <span asp-validation-for="Email" class="text-danger"></span>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input asp-for="Email" type="email" />
+                                    <label asp-for="Email">E-posta</label>
+                                    <span class="focus-border"></span>
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <label asp-for="Subject" class="form-label">Konu</label>
-                            <input asp-for="Subject" class="form-control" />
+                        <div class="form-group">
+                            <input asp-for="Subject" type="text" />
+                            <label asp-for="Subject">Konu</label>
+                            <span class="focus-border"></span>
                         </div>
-                        <div class="mb-3">
-                            <label asp-for="Message" class="form-label">Mesaj</label>
-                            <textarea asp-for="Message" class="form-control" rows="5"></textarea>
+                        <div class="form-group">
+                            <textarea asp-for="Message" rows="5"></textarea>
+                            <label asp-for="Message">Mesaj</label>
+                            <span class="focus-border"></span>
                             <span asp-validation-for="Message" class="text-danger"></span>
                         </div>
-                        <button type="submit" class="btn btn-primary">Gönder</button>
+                        <div class="form-submit-group">
+                            <button type="submit" class="rbt-btn btn-md btn-gradient hover-icon-reverse">
+                                <span class="icon-reverse-wrapper">
+                                    <span class="btn-text">Gönder</span>
+                                    <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                    <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                </span>
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-</section>
-@section Scripts { <partial name="_ValidationScriptsPartial" /> }
+</div>

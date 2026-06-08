@@ -1,129 +1,226 @@
 @model Kurdixane.Web.ViewModels.HomeViewModel
+@inject Kurdixane.Web.Services.ISettingService Settings
 @{
     ViewData["Title"] = "Anasayfa";
-    var catIcons = new[] { "fa-wheat-awn", "fa-pepper-hot", "fa-bowl-rice", "fa-mug-hot", "fa-bottle-droplet", "fa-leaf" };
+    var settings = await Settings.GetAllAsync();
+    string siteTitle = settings.GetValueOrDefault("SiteTitle") ?? "Kurdixane";
+    var hero = Model.Sliders.FirstOrDefault();
+    string heroTitle = hero?.Title ?? "Doğal ve Katkısız Lezzetler";
+    string heroSub = hero?.Subtitle ?? settings.GetValueOrDefault("SiteSlogan") ?? "Sofranıza özenle seçilmiş ürünler";
+    string heroBtnText = string.IsNullOrEmpty(hero?.ButtonText) ? "Alışverişe Başla" : hero!.ButtonText!;
+    string heroBtnLink = string.IsNullOrEmpty(hero?.Link) ? Url.Action("Index", "Product")! : hero!.Link!;
+    string heroImg = hero?.ImageUrl ?? "/theme/images/about/about-3.png";
+    var catIcons = new[] { "feather-coffee", "feather-gift", "feather-shopping-bag", "feather-package", "feather-droplet", "feather-feather" };
 }
 
-@if (Model.Sliders.Any())
+<!-- Start Banner Area -->
+<div class="rbt-banner-area rbt-banner-3 header-transperent-spacer">
+    <div class="wrapper">
+        <div class="container">
+            <div class="row g-5 align-items-center">
+                <div class="col-lg-7 order-2 order-lg-1">
+                    <div class="banner-content">
+                        <div class="inner">
+                            <div class="section-title text-start">
+                                <span class="subtitle bg-pink-opacity">@siteTitle</span>
+                            </div>
+                            <h1 class="title">@heroTitle</h1>
+                            <p class="description">@heroSub</p>
+                            <div class="banner-btn d-flex flex-wrap gap-3 mt--20">
+                                <a class="rbt-btn btn-gradient hover-icon-reverse" href="@heroBtnLink">
+                                    <div class="icon-reverse-wrapper">
+                                        <span class="btn-text">@heroBtnText</span>
+                                        <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                        <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                    </div>
+                                </a>
+                                <a class="rbt-btn btn-border hover-icon-reverse" asp-controller="Blog" asp-action="Index">
+                                    <div class="icon-reverse-wrapper">
+                                        <span class="btn-text">Blog</span>
+                                        <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                        <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5 order-1 order-lg-2">
+                    <div class="rbt-banner-image text-center">
+                        <img src="@heroImg" alt="@heroTitle" class="kx-hero-img" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Banner Area -->
+
+@if (Model.Categories.Any())
 {
-    <section class="hero-slider">
-        <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-indicators">
-                @for (int i = 0; i < Model.Sliders.Count; i++)
+    <!-- Start Category Area -->
+    <div class="rbt-categories-area bg-color-white ptb--60">
+        <div class="container">
+            <div class="row mb--40">
+                <div class="col-lg-12">
+                    <div class="section-title text-center">
+                        <span class="subtitle bg-primary-opacity">Kategoriler</span>
+                        <h2 class="title">İhtiyacınıza uygun ürün gruplarını keşfedin</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-4">
+                @{ int ci = 0; }
+                @foreach (var cat in Model.Categories)
                 {
-                    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="@i" class="@(i == 0 ? "active" : "")"></button>
+                    <div class="col-lg-2 col-md-4 col-6">
+                        <a class="kx-cat-card" asp-controller="Category" asp-action="Index" asp-route-slug="@cat.Slug">
+                            <span class="kx-cat-icon"><i class="@catIcons[ci++ % catIcons.Length]"></i></span>
+                            <h6>@cat.Name</h6>
+                        </a>
+                    </div>
                 }
             </div>
-            <div class="carousel-inner">
-                @for (int i = 0; i < Model.Sliders.Count; i++)
+        </div>
+    </div>
+    <!-- End Category Area -->
+}
+
+@if (Model.FeaturedProducts.Any())
+{
+    <!-- Start Featured Products -->
+    <div class="rbt-course-area bg-color-extra2 ptb--60">
+        <div class="container">
+            <div class="row align-items-end mb--40">
+                <div class="col-lg-8">
+                    <div class="section-title text-start">
+                        <span class="subtitle bg-secondary-opacity">Öne Çıkanlar</span>
+                        <h2 class="title">Öne Çıkan Ürünler</h2>
+                    </div>
+                </div>
+                <div class="col-lg-4 text-start text-lg-end">
+                    <a class="rbt-btn btn-border-gradient radius-round btn-sm" asp-controller="Product" asp-action="Index">Tümünü Gör <i class="feather-arrow-right"></i></a>
+                </div>
+            </div>
+            <div class="row g-4">
+                @foreach (var p in Model.FeaturedProducts)
                 {
-                    var s = Model.Sliders[i];
-                    <div class="carousel-item @(i == 0 ? "active" : "")">
-                        <div class="hero-slide" style="background-image:url('@s.ImageUrl')">
-                            <div class="container">
-                                <div class="hero-content">
-                                    <h2>@s.Title</h2>
-                                    <p>@s.Subtitle</p>
-                                    @if (!string.IsNullOrEmpty(s.Link))
-                                    {
-                                        <a href="@s.Link" class="btn btn-accent btn-lg">@(string.IsNullOrEmpty(s.ButtonText) ? "İncele" : s.ButtonText)</a>
-                                    }
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-12"><partial name="_ProductCard" model="p" /></div>
+                }
+            </div>
+        </div>
+    </div>
+    <!-- End Featured Products -->
+}
+
+@if (Model.LatestProducts.Any())
+{
+    <!-- Start Latest Products -->
+    <div class="rbt-course-area bg-color-white ptb--60">
+        <div class="container">
+            <div class="row mb--40">
+                <div class="col-lg-12">
+                    <div class="section-title text-center">
+                        <span class="subtitle bg-primary-opacity">Yeni Gelenler</span>
+                        <h2 class="title">Yeni Ürünler</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-4">
+                @foreach (var p in Model.LatestProducts)
+                {
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-12"><partial name="_ProductCard" model="p" /></div>
+                }
+            </div>
+            <div class="row">
+                <div class="col-12 text-center mt--40">
+                    <a class="rbt-btn btn-gradient hover-icon-reverse" asp-controller="Product" asp-action="Index">
+                        <div class="icon-reverse-wrapper">
+                            <span class="btn-text">Tüm Ürünler</span>
+                            <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                            <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Latest Products -->
+}
+
+<!-- Start Feature Area -->
+<div class="rbt-feature-area bg-color-extra2 ptb--60">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6 col-12">
+                <div class="kx-feature-box">
+                    <span class="kx-feature-icon"><i class="feather-truck"></i></span>
+                    <h6>Hızlı Teslimat</h6>
+                    <p>Siparişleriniz özenle hazırlanır</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-12">
+                <div class="kx-feature-box">
+                    <span class="kx-feature-icon"><i class="feather-feather"></i></span>
+                    <h6>%100 Doğal</h6>
+                    <p>Doğal ve katkısız ürünler</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-12">
+                <div class="kx-feature-box">
+                    <span class="kx-feature-icon"><i class="feather-shield"></i></span>
+                    <h6>Güvenli Alışveriş</h6>
+                    <p>Bilgileriniz güvende</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-12">
+                <div class="kx-feature-box">
+                    <span class="kx-feature-icon"><i class="feather-headphones"></i></span>
+                    <h6>Destek</h6>
+                    <p>Her zaman yanınızdayız</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Feature Area -->
+
+@if (Model.RecentPosts.Any())
+{
+    <!-- Start Blog Area -->
+    <div class="rbt-blog-area bg-color-white ptb--60">
+        <div class="container">
+            <div class="row mb--40">
+                <div class="col-lg-12">
+                    <div class="section-title text-center">
+                        <span class="subtitle bg-coral-opacity">Blog</span>
+                        <h2 class="title">Güncel Yazılarımız</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-4">
+                @foreach (var post in Model.RecentPosts)
+                {
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <div class="rbt-card variation-02 rbt-hover">
+                            <div class="rbt-card-img">
+                                <a asp-controller="Blog" asp-action="Detail" asp-route-slug="@post.Slug">
+                                    <img src="@(string.IsNullOrEmpty(post.ImageUrl) ? "/img/blog/post-1.svg" : post.ImageUrl)" alt="@post.Title" />
+                                </a>
+                            </div>
+                            <div class="rbt-card-body">
+                                <div class="rbt-card-top">
+                                    <span class="rbt-meta"><i class="feather-calendar"></i> @((post.PublishedAt ?? post.CreatedAt).ToString("dd.MM.yyyy"))</span>
                                 </div>
+                                <h4 class="rbt-card-title"><a asp-controller="Blog" asp-action="Detail" asp-route-slug="@post.Slug">@post.Title</a></h4>
+                                <p class="rbt-card-text">@post.Summary</p>
+                                <a class="rbt-btn-link" asp-controller="Blog" asp-action="Detail" asp-route-slug="@post.Slug">Devamını Oku <i class="feather-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>
                 }
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev"><span class="carousel-control-prev-icon"></span></button>
-            <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next"><span class="carousel-control-next-icon"></span></button>
-        </div>
-    </section>
-}
-
-<section class="section">
-    <div class="container">
-        <div class="section-title"><h3>Kategoriler</h3><p>İhtiyacınıza uygun ürün gruplarını keşfedin</p></div>
-        <div class="row g-3">
-            @{ int ci = 0; }
-            @foreach (var cat in Model.Categories)
-            {
-                <div class="col-6 col-md-4 col-lg-2">
-                    <a class="category-card" asp-controller="Category" asp-action="Index" asp-route-slug="@cat.Slug">
-                        <div class="cat-icon"><i class="fa-solid @catIcons[ci++ % catIcons.Length]"></i></div>
-                        <h6>@cat.Name</h6>
-                    </a>
-                </div>
-            }
         </div>
     </div>
-</section>
-
-@if (Model.FeaturedProducts.Any())
-{
-    <section class="section bg-light-kx">
-        <div class="container">
-            <div class="section-title"><h3>Öne Çıkan Ürünler</h3><p>En çok tercih edilen ürünlerimiz</p></div>
-            <div class="row g-4">
-                @foreach (var p in Model.FeaturedProducts)
-                {
-                    <div class="col-6 col-md-4 col-lg-3"><partial name="_ProductCard" model="p" /></div>
-                }
-            </div>
-        </div>
-    </section>
-}
-
-@if (Model.LatestProducts.Any())
-{
-    <section class="section">
-        <div class="container">
-            <div class="section-title"><h3>Yeni Ürünler</h3><p>Kataloğumuza yeni eklenenler</p></div>
-            <div class="row g-4">
-                @foreach (var p in Model.LatestProducts)
-                {
-                    <div class="col-6 col-md-4 col-lg-3"><partial name="_ProductCard" model="p" /></div>
-                }
-            </div>
-            <div class="text-center mt-4">
-                <a asp-controller="Product" asp-action="Index" class="btn btn-outline-primary btn-lg">Tüm Ürünler</a>
-            </div>
-        </div>
-    </section>
-}
-
-<section class="section bg-light-kx">
-    <div class="container">
-        <div class="row text-center g-4">
-            <div class="col-md-3"><i class="fa-solid fa-truck-fast fa-2x text-primary mb-2"></i><h6>Hızlı Teslimat</h6><p class="text-muted small">Siparişleriniz özenle hazırlanır</p></div>
-            <div class="col-md-3"><i class="fa-solid fa-leaf fa-2x text-primary mb-2"></i><h6>%100 Doğal</h6><p class="text-muted small">Doğal ve katkısız ürünler</p></div>
-            <div class="col-md-3"><i class="fa-solid fa-shield-halved fa-2x text-primary mb-2"></i><h6>Güvenli Alışveriş</h6><p class="text-muted small">Bilgileriniz güvende</p></div>
-            <div class="col-md-3"><i class="fa-solid fa-headset fa-2x text-primary mb-2"></i><h6>Destek</h6><p class="text-muted small">Her zaman yanınızdayız</p></div>
-        </div>
-    </div>
-</section>
-
-@if (Model.RecentPosts.Any())
-{
-    <section class="section">
-        <div class="container">
-            <div class="section-title"><h3>Blog</h3><p>Güncel yazılarımız</p></div>
-            <div class="row g-4">
-                @foreach (var post in Model.RecentPosts)
-                {
-                    <div class="col-md-4">
-                        <article class="blog-card">
-                            <a asp-controller="Blog" asp-action="Detail" asp-route-slug="@post.Slug" class="blog-thumb d-block">
-                                <img src="@(string.IsNullOrEmpty(post.ImageUrl) ? "/img/blog/post-1.svg" : post.ImageUrl)" alt="@post.Title" />
-                            </a>
-                            <div class="blog-body">
-                                <div class="blog-meta mb-2"><i class="fa-regular fa-calendar me-1"></i>@((post.PublishedAt ?? post.CreatedAt).ToString("dd.MM.yyyy"))</div>
-                                <h5><a asp-controller="Blog" asp-action="Detail" asp-route-slug="@post.Slug" class="text-dark">@post.Title</a></h5>
-                                <p class="text-muted small">@post.Summary</p>
-                            </div>
-                        </article>
-                    </div>
-                }
-            </div>
-        </div>
-    </section>
+    <!-- End Blog Area -->
 }

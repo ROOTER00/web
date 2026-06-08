@@ -3,75 +3,77 @@
     ViewData["Title"] = "Sepetim";
 }
 
-<div class="page-head">
-    <div class="container"><h1>Sepetim</h1></div>
-</div>
+<partial name="_Breadcrumb" />
 
-<section class="section">
+<div class="rbt-cart-area bg-color-white rbt-section-gap">
     <div class="container">
         @if (Model.Lines.Count == 0)
         {
             <div class="text-center py-5">
-                <i class="fa-solid fa-cart-shopping fa-4x text-muted mb-3"></i>
-                <h4>Sepetiniz boş</h4>
-                <a asp-controller="Product" asp-action="Index" class="btn btn-primary mt-2">Alışverişe Başla</a>
+                <div class="kx-empty-icon mb--20"><i class="feather-shopping-cart"></i></div>
+                <h4 class="title">Sepetiniz boş</h4>
+                <p class="description">Beğendiğiniz ürünleri sepete ekleyerek alışverişe başlayın.</p>
+                <a asp-controller="Product" asp-action="Index" class="rbt-btn btn-gradient mt--10">Alışverişe Başla</a>
             </div>
         }
         else
         {
-            <div class="row g-4">
+            <div class="row g-5">
                 <div class="col-lg-8">
-                    <table class="table cart-table align-middle">
-                        <thead>
-                            <tr><th>Ürün</th><th>Fiyat</th><th>Adet</th><th>Toplam</th><th></th></tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var line in Model.Lines)
-                            {
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center gap-2">
-                                            <img src="@(string.IsNullOrEmpty(line.ImageUrl) ? "/img/products/placeholder-1.svg" : line.ImageUrl)" alt="@line.Name" />
-                                            <a asp-controller="Product" asp-action="Detail" asp-route-slug="@line.Slug" class="text-dark fw-semibold">@line.Name</a>
-                                        </div>
-                                    </td>
-                                    <td>@line.UnitPrice.ToString("N2") ₺</td>
-                                    <td>
-                                        <form asp-controller="Cart" asp-action="Update" method="post" class="d-flex gap-1">
-                                            @Html.AntiForgeryToken()
-                                            <input type="hidden" name="productId" value="@line.ProductId" />
-                                            <input type="number" name="quantity" value="@line.Quantity" min="1" class="form-control form-control-sm" style="width:70px" />
-                                            <button class="btn btn-sm btn-outline-secondary" type="submit"><i class="fa-solid fa-rotate"></i></button>
-                                        </form>
-                                    </td>
-                                    <td class="fw-bold">@line.LineTotal.ToString("N2") ₺</td>
-                                    <td>
-                                        <form asp-controller="Cart" asp-action="Remove" method="post">
-                                            @Html.AntiForgeryToken()
-                                            <input type="hidden" name="productId" value="@line.ProductId" />
-                                            <button class="btn btn-sm btn-outline-danger" type="submit"><i class="fa-solid fa-trash"></i></button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                    <form asp-controller="Cart" asp-action="Clear" method="post">
-                        @Html.AntiForgeryToken()
-                        <button class="btn btn-link text-danger" type="submit">Sepeti Temizle</button>
-                    </form>
+                    <div class="kx-summary-card">
+                        <div class="table-responsive">
+                            <table class="kx-cart-table">
+                                <thead>
+                                    <tr><th>Ürün</th><th>Fiyat</th><th>Adet</th><th>Toplam</th><th></th></tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var line in Model.Lines)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <div class="kx-cart-product">
+                                                    <img class="kx-cart-thumb" src="@(string.IsNullOrEmpty(line.ImageUrl) ? "/img/products/placeholder-1.svg" : line.ImageUrl)" alt="@line.Name" />
+                                                    <a asp-controller="Product" asp-action="Detail" asp-route-slug="@line.Slug" class="fw-semibold">@line.Name</a>
+                                                </div>
+                                            </td>
+                                            <td>@line.UnitPrice.ToString("N2") ₺</td>
+                                            <td>
+                                                <form asp-controller="Cart" asp-action="Update" method="post" class="d-flex gap-1">
+                                                    @Html.AntiForgeryToken()
+                                                    <input type="hidden" name="productId" value="@line.ProductId" />
+                                                    <input type="number" name="quantity" value="@line.Quantity" min="1" class="kx-qty-input form-control form-control-sm" />
+                                                    <button class="rbt-btn-link" type="submit" title="Güncelle"><i class="feather-refresh-cw"></i></button>
+                                                </form>
+                                            </td>
+                                            <td class="fw-bold">@line.LineTotal.ToString("N2") ₺</td>
+                                            <td>
+                                                <form asp-controller="Cart" asp-action="Remove" method="post">
+                                                    @Html.AntiForgeryToken()
+                                                    <input type="hidden" name="productId" value="@line.ProductId" />
+                                                    <button class="rbt-btn-link color-danger" type="submit" title="Kaldır"><i class="feather-trash-2"></i></button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <form asp-controller="Cart" asp-action="Clear" method="post" class="mt--20">
+                            @Html.AntiForgeryToken()
+                            <button class="rbt-btn-link color-danger" type="submit"><i class="feather-trash-2"></i> Sepeti Temizle</button>
+                        </form>
+                    </div>
                 </div>
                 <div class="col-lg-4">
-                    <div class="cart-summary">
-                        <h5 class="mb-3">Sipariş Özeti</h5>
-                        <div class="d-flex justify-content-between mb-2"><span>Ara Toplam</span><span>@Model.Subtotal.ToString("N2") ₺</span></div>
-                        <div class="d-flex justify-content-between mb-2"><span>Kargo</span><span>@(Model.ShippingCost == 0 ? "Ücretsiz" : Model.ShippingCost.ToString("N2") + " ₺")</span></div>
-                        <hr />
-                        <div class="d-flex justify-content-between fw-bold fs-5"><span>Toplam</span><span class="text-primary">@Model.Total.ToString("N2") ₺</span></div>
-                        <a asp-controller="Checkout" asp-action="Index" class="btn btn-primary w-100 mt-3">Siparişi Tamamla</a>
+                    <div class="kx-summary-card">
+                        <h4>Sipariş Özeti</h4>
+                        <div class="kx-summary-row"><span>Ara Toplam</span><span>@Model.Subtotal.ToString("N2") ₺</span></div>
+                        <div class="kx-summary-row"><span>Kargo</span><span>@(Model.ShippingCost == 0 ? "Ücretsiz" : Model.ShippingCost.ToString("N2") + " ₺")</span></div>
+                        <div class="kx-summary-total"><span>Toplam</span><span>@Model.Total.ToString("N2") ₺</span></div>
+                        <a asp-controller="Checkout" asp-action="Index" class="rbt-btn btn-gradient w-100 mt--20 text-center">Siparişi Tamamla</a>
                     </div>
                 </div>
             </div>
         }
     </div>
-</section>
+</div>
